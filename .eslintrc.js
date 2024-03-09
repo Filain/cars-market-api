@@ -21,6 +21,9 @@ module.exports = {
     jest: true,
   },
   rules: {
+    "@typescript-eslint/no-unused-vars": "warn",
+    // "@typescript-eslint/no-unused-vars-experimental": "error",
+    // "no-unused-vars": "off",
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -31,7 +34,7 @@ module.exports = {
     "import/newline-after-import": ["error", { "count": 1 }],
     "import/no-duplicates": "error",
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
-    'no-console': 'warn',
+    'no-console': 'error',
     'sort-imports': ['error', {
       'ignoreCase': true,
       'ignoreDeclarationSort': true,
