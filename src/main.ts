@@ -4,7 +4,9 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as process from 'process';
 
+import { GlobalExceptionFilter } from './common/exeptions/global-exception.filter';
 import { SwaggerHelper } from './common/helpers/swagger.helper';
+import { AppConfig, Config } from './configs/configs.type';
 import { AppModule } from './modules/app.module';
 
 async function bootstrap() {
@@ -29,6 +31,7 @@ async function bootstrap() {
       persistAuthorization: true,
     },
   });
+  app.useGlobalFilters(new GlobalExceptionFilter());
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -36,8 +39,8 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-  const configService = app.get(ConfigService);
-  const appConfig = configService.get('app');
+  const configService = app.get(ConfigService<Config>);
+  const appConfig = configService.get<AppConfig>('app');
   await app.listen(appConfig.port, () => {
     const url = `http://localhost:${appConfig.port}`;
     Logger.log(`Server running ${url}`);

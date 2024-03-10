@@ -25,7 +25,8 @@ export class CreateUserDto {
   // @Matches()
   password: string;
 
-  @IsDate()
-  @Type(() => Date)
+  // @IsDate()
+  @IsString()
+  // @Type(() => Date)
   date: Date;
 }
