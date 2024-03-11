@@ -1,4 +1,4 @@
-import { OpenAPIObject } from '@nestjs/swagger';
+import { OpenAPIObject } from '@nestjs/swagger/dist/interfaces';
 
 const pathMethods = ['get', 'post', 'put', 'patch', 'delete'] as const;
 

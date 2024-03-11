@@ -12,14 +12,17 @@ export class UserEntity extends BaseEntity {
   @Column('text')
   email: string;
 
+  // @Column('text')
+  // deviceId: string;
+
   @Column('text', { select: false })
   password: string;
 
-  @Column('text')
-  role: string;
+  @Column('text', { nullable: true })
+  role?: string;
 
-  @Column('boolean')
-  account: boolean;
+  @Column('text', { nullable: true })
+  account?: boolean;
 
   @OneToMany(() => RefreshTokenEntity, (entity) => entity.user)
   refreshTokens: RefreshTokenEntity[];

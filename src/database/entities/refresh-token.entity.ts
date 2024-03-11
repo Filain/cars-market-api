@@ -10,7 +10,7 @@ export class RefreshTokenEntity extends BaseEntity {
   @Column('text')
   refreshToken: string;
 
-  @Column()
+  @Column('text')
   deviceId: string;
 
   @Column()

@@ -6,7 +6,7 @@ import * as process from 'process';
 
 import { GlobalExceptionFilter } from './common/exeptions/global-exception.filter';
 import { SwaggerHelper } from './common/helpers/swagger.helper';
-import { AppConfig, Config } from './configs/configs.type';
+import { AppConfig, Config } from './configs/config.type';
 import { AppModule } from './modules/app.module';
 
 async function bootstrap() {
