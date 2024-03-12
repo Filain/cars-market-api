@@ -1,18 +1,8 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
-import { CreateUserDto } from './dto/request/create-user.dto';
 import { UpdateUserDto } from './dto/request/update-user.dto';
-import { UserResponseDto } from './dto/response/user.response.dto';
 import { UserService } from './services/user.service';
 
 @ApiTags('User')
@@ -20,36 +10,35 @@ import { UserService } from './services/user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @SkipAuth()
-  @Post()
-  public async create(@Body() dto: CreateUserDto): Promise<UserResponseDto> {
-    return await this.userService.create(dto);
-  }
+  // @SkipAuth()
+  // @Post()
+  // public async create(@Body() dto: CreateUserDto): Promise<UserResponseDto> {
+  //   return await this.userService.create(dto);
+  // }
+  //
+  // @SkipAuth()
+  // @Get()
+  // public async findAll(): Promise<string> {
+  //   return await this.userService.findAll();
+  // }
 
-  @SkipAuth()
-  @Get()
-  public async findAll(): Promise<string> {
-    return await this.userService.findAll();
+  @ApiBearerAuth()
+  @Get(':me')
+  public async findMe(): Promise<string> {
+    return await this.userService.findOne(155);
   }
 
   @ApiBearerAuth()
-  @Get(':id')
-  public async findOne(@Param('id') id: string): Promise<string> {
-    return await this.userService.findOne(+id);
-  }
-
-  @ApiBearerAuth()
-  @Patch(':id')
+  @Put('me')
   public async update(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<string> {
-    return await this.userService.update(+id, updateUserDto);
+    return await this.userService.update(12, updateUserDto);
   }
-
-  @ApiBearerAuth()
-  @Delete(':id')
-  public async remove(@Param('id') id: string): Promise<string> {
+  @SkipAuth()
+  @Get(':id')
+  public async findOne(@Param('id') id: string): Promise<string> {
     return await this.userService.remove(+id);
   }
 }
