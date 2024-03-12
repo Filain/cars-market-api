@@ -22,6 +22,9 @@ export class AuthService {
     private readonly userRepository: UserRepository,
     private readonly refreshRepository: RefreshTokenRepository,
   ) {}
+  public async findAll(): Promise<string> {
+    return `This action returns all user`;
+  }
 
   public async signUp(dto: SignUpRequestDto): Promise<AuthUserResponseDto> {
     await this.userService.isEmailUniqueOrThrow(dto.email);
@@ -34,6 +37,7 @@ export class AuthService {
     const tokens = await this.tokenService.generateAuthTokens({
       userId: user.id,
       deviceId: dto.deviceId,
+      userRoles: user.roles,
     });
 
     await Promise.all([
@@ -75,6 +79,7 @@ export class AuthService {
     const tokens = await this.tokenService.generateAuthTokens({
       userId: user.id,
       deviceId: dto.deviceId,
+      userRoles: user.roles,
     });
 
     await Promise.all([
@@ -127,6 +132,7 @@ export class AuthService {
     const tokens = await this.tokenService.generateAuthTokens({
       userId: user.id,
       deviceId: userData.deviceId,
+      userRoles: user.roles,
     });
 
     await Promise.all([

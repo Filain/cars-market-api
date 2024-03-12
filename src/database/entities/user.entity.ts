@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
+import { Role } from '../../common/guard/enums/role.enum';
 import { CarsEntity } from './cars.entity';
 import { BaseEntity } from './models/base.entity';
 import { RefreshTokenEntity } from './refresh-token.entity';
@@ -12,14 +13,15 @@ export class UserEntity extends BaseEntity {
   @Column('text', { unique: true })
   email: string;
 
-  // @Column('text')
-  // deviceId: string;
-
   @Column('text', { select: false })
   password: string;
 
-  @Column('text', { nullable: true })
-  role?: string;
+  @Column({
+    type: 'enum',
+    enum: Role,
+    default: Role.User,
+  })
+  roles: Role;
 
   @Column('text', { nullable: true })
   account?: boolean;

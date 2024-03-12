@@ -3,7 +3,9 @@ export class UserResponseDto {
 
   name: string;
 
-  age: number;
-
   email: string;
+
+  account: boolean;
+
+  roles: string;
 }

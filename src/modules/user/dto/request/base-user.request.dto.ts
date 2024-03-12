@@ -3,6 +3,8 @@ import { Transform, Type } from 'class-transformer';
 import { IsOptional, IsString, Length, Matches } from 'class-validator';
 import { TransformHelper } from 'src/common/helpers/transform.helper';
 
+import { Role } from '../../../../common/guard/enums/role.enum';
+
 export class BaseUserRequestDto {
   @IsOptional()
   @IsString()
@@ -32,4 +34,8 @@ export class BaseUserRequestDto {
   @Length(0, 300)
   @Matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%_*#?&])[A-Za-z\d@$_!%*#?&]{8,}$/)
   password: string;
+
+  @ApiProperty({ enum: Role })
+  @IsString()
+  roles: Role;
 }

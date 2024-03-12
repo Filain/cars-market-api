@@ -1,8 +1,13 @@
 import { Body, Controller, Get, Param, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+import { Roles } from '../../common/decorators/roles.decorator';
+import { Role } from '../../common/guard/enums/role.enum';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
+import { IUserData } from '../auth/interfaces/user-data.interface';
 import { UpdateUserDto } from './dto/request/update-user.dto';
+import { UserResponseDto } from './dto/response/user.response.dto';
 import { UserService } from './services/user.service';
 
 @ApiTags('User')
@@ -16,16 +21,19 @@ export class UserController {
   //   return await this.userService.create(dto);
   // }
   //
-  // @SkipAuth()
-  // @Get()
-  // public async findAll(): Promise<string> {
-  //   return await this.userService.findAll();
-  // }
-
+  // @Roles(Role.Admin)
+  @SkipAuth()
+  @Get()
+  public async findAll(): Promise<string> {
+    return await this.userService.findAll();
+  }
+  @Roles(Role.Admin)
   @ApiBearerAuth()
-  @Get(':me')
-  public async findMe(): Promise<string> {
-    return await this.userService.findOne(155);
+  @Get('me')
+  public async findMe(
+    @CurrentUser() userData: IUserData,
+  ): Promise<UserResponseDto> {
+    return await this.userService.findMe(userData);
   }
 
   @ApiBearerAuth()
@@ -36,9 +44,10 @@ export class UserController {
   ): Promise<string> {
     return await this.userService.update(12, updateUserDto);
   }
+
   @SkipAuth()
   @Get(':id')
   public async findOne(@Param('id') id: string): Promise<string> {
-    return await this.userService.remove(+id);
+    return await this.userService.findOne(+id);
   }
 }

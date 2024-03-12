@@ -6,9 +6,12 @@ import {
 } from '@nestjs/common';
 import { CacheCustom } from 'src/common/decorators/cache-method.decorator';
 
+import { IUserData } from '../../auth/interfaces/user-data.interface';
 import { UserRepository } from '../../repository/services/user.repository';
 import { BaseUserRequestDto } from '../dto/request/base-user.request.dto';
 import { UpdateUserRequestDto } from '../dto/request/update-user.request.dto';
+import { UserResponseDto } from '../dto/response/user.response.dto';
+import { UserMapper } from './user.mapper';
 
 @Injectable()
 export class UserService {
@@ -39,6 +42,11 @@ export class UserService {
 
   public async remove(id: number): Promise<string> {
     return `This action removes a #${id} user`;
+  }
+  public async findMe(userData: IUserData): Promise<UserResponseDto> {
+    const entity = await this.userRepository.findOneBy({ id: userData.userId });
+    // console.log(UserMapper.toResponseDto(entity));
+    return UserMapper.toResponseDto(entity);
   }
   public async isEmailUniqueOrThrow(email: string): Promise<void> {
     const user = await this.userRepository.findOneBy({ email });
