@@ -45,10 +45,20 @@ export class AuthController {
   @Put('seller')
   public async changeToSealer(
     @CurrentUser() userData: IUserData,
-    @Body() dto: UpdateUserToSallerRequestDto,
+    // @Body() dto: UpdateUserToSallerRequestDto,
   ): Promise<UserResponseDto> {
-    return await this.authService.changeToSealer(userData, dto);
+    return await this.authService.changeToSealer(userData);
   }
+
+  // @ApiBearerAuth()
+  // @ApiOperation({ summary: 'Change to Seller' })
+  // @Put('seller')
+  // public async changeToSealer(
+  //   @CurrentUser() userData: IUserData,
+  //   @Body() dto: UpdateUserToSallerRequestDto,
+  // ): Promise<UserResponseDto> {
+  //   return await this.authService.changeToSealer(userData, dto);
+  // }
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Logout' })
   @Post('logout')

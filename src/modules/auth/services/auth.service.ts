@@ -6,7 +6,6 @@ import { UserEntity } from '../../../database/entities/user.entity';
 import { RefreshTokenRepository } from '../../repository/services/refresh-token.repository';
 import { UserRepository } from '../../repository/services/user.repository';
 import { BaseUserRequestDto } from '../../user/dto/request/base-user.request.dto';
-import { UpdateUserRequestDto } from '../../user/dto/request/update-user.request.dto';
 import { UserResponseDto } from '../../user/dto/response/user.response.dto';
 import { UserMapper } from '../../user/services/user.mapper';
 import { UserService } from '../../user/services/user.service';
@@ -45,14 +44,26 @@ export class AuthService {
     return admin;
   }
 
-  public async changeToSealer(
-    userData: IUserData,
-    dto: UpdateUserToSallerRequestDto,
-  ): Promise<UserResponseDto> {
+  // public async changeToSealer(
+  //   userData: IUserData,
+  //   dto: UpdateUserToSallerRequestDto,
+  // ): Promise<UserResponseDto> {
+  //   const userEntity = await this.userRepository.findOneBy({
+  //     id: userData.userId,
+  //   });
+  //   console.log('userEntity', userEntity);
+  //   userEntity.roles = Role.Seller;
+  //   console.log('userEntity', userEntity);
+  //   const user = await this.userRepository.save({ ...userEntity, ...dto });
+  //   return UserMapper.toResponseDto(user);
+  // }
+
+  public async changeToSealer(userData: IUserData): Promise<UserResponseDto> {
     const userEntity = await this.userRepository.findOneBy({
       id: userData.userId,
     });
-    const user = await this.userRepository.save({ ...userEntity, ...dto });
+    userEntity.roles = Role.Seller;
+    const user = await this.userRepository.save({ ...userEntity });
     return UserMapper.toResponseDto(user);
   }
 
