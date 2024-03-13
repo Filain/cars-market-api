@@ -8,9 +8,9 @@ services:
     environment:
       POSTGRES_USER: '${POSTGRES_USER:-user}'
       POSTGRES_PASSWORD: '${POSTGRES_PASSWORD:-password}'
-      POSTGRES_DB: '${POSTGRES_DB:-cars}'
+      POSTGRES_DB: '${POSTGRES_DB:-postgres}'
     volumes:
-      - june-2023-api-db:/var/lib/postgresql/cars
+      - june-2023-api-db:/var/lib/postgresql/postgres
 
   cars-redis:
     image: redis:7.2.3

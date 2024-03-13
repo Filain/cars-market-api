@@ -8,7 +8,7 @@ import { Role } from './common/guard/enums/role.enum';
 import { SwaggerHelper } from './common/helpers/swagger.helper';
 import { AppConfig, Config } from './configs/config.type';
 import { AppModule } from './modules/app.module';
-import { SignUpRequestDto } from './modules/auth/dto/request/sign-up.request.dto';
+import { SignUpAdminRequestDto } from './modules/auth/dto/request/sign-up-admin.request.dto';
 import { AuthService } from './modules/auth/services/auth.service';
 
 async function bootstrap() {
@@ -51,11 +51,11 @@ async function bootstrap() {
 
   const appAdminCreate = app.get(AuthService);
 
-  const adminData: SignUpRequestDto = {
+  const adminData: SignUpAdminRequestDto = {
     deviceId: 'deviceId',
     name: 'admin',
     email: 'admin@example.com',
-    password: 'admin123',
+    password: '123qwe!@#QWE',
     roles: Role.Admin,
   };
   const maileA = await appAdminCreate.isAdmin(adminData.email);

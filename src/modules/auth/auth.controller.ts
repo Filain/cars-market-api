@@ -1,12 +1,16 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { Roles } from '../../common/decorators/roles.decorator';
 import { Role } from '../../common/guard/enums/role.enum';
+import { BaseUserRequestDto } from '../user/dto/request/base-user.request.dto';
+import { UserResponseDto } from '../user/dto/response/user.response.dto';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { SkipAuth } from './decorators/skip-auth.decorator';
 import { SignInRequestDto } from './dto/request/sign-in.request.dto';
 import { SignUpRequestDto } from './dto/request/sign-up.request.dto';
+import { SignUpAdminRequestDto } from './dto/request/sign-up-admin.request.dto';
+import { UpdateUserToSallerRequestDto } from './dto/request/update-user-to-saller.request.dto';
 import { AuthUserResponseDto } from './dto/response/auth-user.response.dto';
 import { TokenResponseDto } from './dto/response/token.response.dto';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
@@ -37,6 +41,15 @@ export class AuthController {
   }
 
   @ApiBearerAuth()
+  @ApiOperation({ summary: 'Change to Seller' })
+  @Put('seller')
+  public async changeToSealer(
+    @CurrentUser() userData: IUserData,
+    @Body() dto: UpdateUserToSallerRequestDto,
+  ): Promise<UserResponseDto> {
+    return await this.authService.changeToSealer(userData, dto);
+  }
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Logout' })
   @Post('logout')
   public async logout(@CurrentUser() userData: IUserData): Promise<void> {
@@ -53,11 +66,13 @@ export class AuthController {
   ): Promise<TokenResponseDto> {
     return await this.authService.refreshToken(userData);
   }
-  @Roles(Role.User)
+  @Roles(Role.Admin)
   @ApiBearerAuth()
-  @SkipAuth()
-  @Get()
-  public async findAll(): Promise<string> {
-    return await this.authService.findAll();
+  @ApiOperation({ summary: 'Creat manager or other type of user' })
+  @Post('create')
+  public async createUser(
+    @Body() dto: SignUpAdminRequestDto,
+  ): Promise<BaseUserRequestDto> {
+    return await this.authService.createUser(dto);
   }
 }

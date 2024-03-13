@@ -13,6 +13,9 @@ export class UserEntity extends BaseEntity {
   @Column('text', { unique: true })
   email: string;
 
+  @Column('text')
+  deviceId: string;
+
   @Column('text', { select: false })
   password: string;
 
