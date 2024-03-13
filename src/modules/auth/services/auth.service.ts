@@ -1,6 +1,11 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
+import { UserEntity } from '../../../database/entities/user.entity';
 import { RefreshTokenRepository } from '../../repository/services/refresh-token.repository';
 import { UserRepository } from '../../repository/services/user.repository';
 import { UserService } from '../../user/services/user.service';
@@ -24,6 +29,17 @@ export class AuthService {
   ) {}
   public async findAll(): Promise<string> {
     return `This action returns all user`;
+  }
+  public async isAdmin(email: string): Promise<UserEntity> {
+    return await this.userRepository.findOneBy({ email });
+  }
+
+  public async createAdmin(dto: SignUpRequestDto): Promise<UserEntity> {
+    const password = await bcrypt.hash(dto.password, 10);
+    const admin = await this.userRepository.save(
+      this.userRepository.create({ ...dto, password }),
+    );
+    return admin;
   }
 
   public async signUp(dto: SignUpRequestDto): Promise<AuthUserResponseDto> {

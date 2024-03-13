@@ -13,15 +13,15 @@ export class BaseUserRequestDto {
   @Type(() => String)
   name?: string;
 
-  @IsOptional()
-  @IsString()
-  @Length(0, 300)
-  bio?: string;
-
-  @IsOptional()
-  @IsString()
-  @Length(0, 3000)
-  image?: string;
+  // @IsOptional()
+  // @IsString()
+  // @Length(0, 300)
+  // bio?: string;
+  //
+  // @IsOptional()
+  // @IsString()
+  // @Length(0, 3000)
+  // image?: string;
 
   @ApiProperty({ example: 'test@gmail.com' })
   @IsString()

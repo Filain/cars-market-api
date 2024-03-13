@@ -2,12 +2,14 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as process from 'process';
 
 import { GlobalExceptionFilter } from './common/exeptions/global-exception.filter';
+import { Role } from './common/guard/enums/role.enum';
 import { SwaggerHelper } from './common/helpers/swagger.helper';
 import { AppConfig, Config } from './configs/config.type';
 import { AppModule } from './modules/app.module';
+import { SignUpRequestDto } from './modules/auth/dto/request/sign-up.request.dto';
+import { AuthService } from './modules/auth/services/auth.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -46,5 +48,20 @@ async function bootstrap() {
     Logger.log(`Server running ${url}`);
     Logger.log(`Swagger running ${url}/docs`);
   });
+
+  const appAdminCreate = app.get(AuthService);
+
+  const adminData: SignUpRequestDto = {
+    deviceId: 'deviceId',
+    name: 'admin',
+    email: 'admin@example.com',
+    password: 'admin123',
+    roles: Role.Admin,
+  };
+  const maileA = await appAdminCreate.isAdmin(adminData.email);
+  if (!maileA) {
+    await appAdminCreate.createAdmin(adminData);
+    Logger.log('Admin user created successfully.');
+  }
 }
 void bootstrap();
