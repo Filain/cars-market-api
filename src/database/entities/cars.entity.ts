@@ -12,12 +12,12 @@ export class CarsEntity extends BaseEntity {
   model: string;
 
   @Column('text')
-  price: number;
+  price: string;
 
   @Column('text')
   currency: string;
 
-  @Column('boolean')
+  @Column('text')
   description: string;
 
   @Column()

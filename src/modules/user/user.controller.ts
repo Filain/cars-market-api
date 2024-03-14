@@ -1,12 +1,10 @@
 import { Body, Controller, Get, Param, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-import { Roles } from '../../common/decorators/roles.decorator';
-import { Role } from '../../common/guard/enums/role.enum';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
 import { IUserData } from '../auth/interfaces/user-data.interface';
-import { UpdateUserDto } from './dto/request/update-user.dto';
+import { UpdateUserRequestDto } from './dto/request/update-user.request.dto';
 import { UserResponseDto } from './dto/response/user.response.dto';
 import { UserService } from './services/user.service';
 
@@ -27,7 +25,6 @@ export class UserController {
   public async findAll(): Promise<string> {
     return await this.userService.findAll();
   }
-  @Roles(Role.Admin)
   @ApiBearerAuth()
   @Get('me')
   public async findMe(
@@ -38,11 +35,11 @@ export class UserController {
 
   @ApiBearerAuth()
   @Put('me')
-  public async update(
-    @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
-  ): Promise<string> {
-    return await this.userService.update(12, updateUserDto);
+  public async updateMe(
+    @CurrentUser() userData: IUserData,
+    @Body() dto: UpdateUserRequestDto,
+  ): Promise<UserResponseDto> {
+    return await this.userService.updateMe(userData, dto);
   }
 
   @SkipAuth()

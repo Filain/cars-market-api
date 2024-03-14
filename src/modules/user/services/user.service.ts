@@ -32,12 +32,13 @@ export class UserService {
     return `This action returns a #${id} user`;
   }
 
-  public async update(
-    id: number,
-    updateUserDto: UpdateUserRequestDto,
-  ): Promise<string> {
-    Logger.log(updateUserDto);
-    return `This action updates a #${id} user`;
+  public async updateMe(
+    userData: IUserData,
+    dto: UpdateUserRequestDto,
+  ): Promise<UserResponseDto> {
+    const entity = await this.userRepository.findOneBy({ id: userData.userId });
+    const user = await this.userRepository.save({ ...entity, ...dto });
+    return UserMapper.toResponseDto(user);
   }
 
   public async remove(id: number): Promise<string> {

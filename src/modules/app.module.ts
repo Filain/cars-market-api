@@ -5,6 +5,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from '../common/guard/roles.guard';
 import configuration from '../configs/configs';
 import { AuthModule } from './auth/auth.module';
+import { CarsModule } from './cars/cars.module';
 import { HealthModule } from './health/health.module';
 import { PostgresModule } from './postgres/postgres.module';
 import { RedisModule } from './redis/redis.module';
@@ -28,6 +29,7 @@ import { UserModule } from './user/user.module';
     }),
     AuthModule,
     UserModule,
+    CarsModule,
     HealthModule,
     RepositoryModule,
   ],

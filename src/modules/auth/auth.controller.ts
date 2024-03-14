@@ -10,7 +10,6 @@ import { SkipAuth } from './decorators/skip-auth.decorator';
 import { SignInRequestDto } from './dto/request/sign-in.request.dto';
 import { SignUpRequestDto } from './dto/request/sign-up.request.dto';
 import { SignUpAdminRequestDto } from './dto/request/sign-up-admin.request.dto';
-import { UpdateUserToSallerRequestDto } from './dto/request/update-user-to-saller.request.dto';
 import { AuthUserResponseDto } from './dto/response/auth-user.response.dto';
 import { TokenResponseDto } from './dto/response/token.response.dto';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
