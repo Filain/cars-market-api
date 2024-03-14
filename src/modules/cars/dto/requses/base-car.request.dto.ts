@@ -10,9 +10,18 @@ export class BaseCarRequestDto {
   @IsString()
   price: string;
 
+  // @IsInt()
+  // price: number;
+
   @IsString()
   currency: string;
 
   @IsString()
   description: string;
+
+  @IsString()
+  created: string;
+
+  @IsString()
+  updated: string;
 }

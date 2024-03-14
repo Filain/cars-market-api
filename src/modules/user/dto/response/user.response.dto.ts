@@ -1,11 +1,11 @@
 export class UserResponseDto {
   id: string;
 
-  name: string;
+  name?: string;
 
   email: string;
 
-  account: boolean;
+  account?: boolean;
 
   roles: string;
 }

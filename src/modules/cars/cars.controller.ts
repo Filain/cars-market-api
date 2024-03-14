@@ -6,15 +6,18 @@ import {
   Param,
   Patch,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
 import { IUserData } from '../auth/interfaces/user-data.interface';
+import { CarsListRequestDto } from './dto/requses/cars-list.request.dto';
 import { CreateCarRequestDto } from './dto/requses/create-car.request.dto';
 import { UpdateCarRequestDto } from './dto/requses/update-car.request.dto';
-import { CarResponceDto } from './dto/response/car.responce.dto';
+import { CarsResponceDto } from './dto/response/cars.responce.dto';
+import { CarsListResponseDto } from './dto/response/cars-list.response.dto';
 import { CarsService } from './services/cars.service';
 
 @ApiTags('Cars')
@@ -24,8 +27,10 @@ export class CarsController {
   @SkipAuth()
   @ApiOperation({ summary: 'Get all cars' })
   @Get()
-  findAll() {
-    return this.carsService.findAll();
+  public async findAll(
+    @Query() query: CarsListRequestDto,
+  ): Promise<CarsListResponseDto> {
+    return await this.carsService.findAll(query);
   }
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Post advertisement' })
@@ -33,7 +38,7 @@ export class CarsController {
   public async create(
     @Body() dto: CreateCarRequestDto,
     @CurrentUser() userData: IUserData,
-  ): Promise<CarResponceDto> {
+  ): Promise<CarsResponceDto> {
     return await this.carsService.create(dto, userData);
   }
   @SkipAuth()
