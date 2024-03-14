@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Patch,
+  Post,
   Put,
   Query,
 } from '@nestjs/common';
@@ -34,7 +35,7 @@ export class CarsController {
   }
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Post advertisement' })
-  @Put()
+  @Post()
   public async create(
     @Body() dto: CreateCarRequestDto,
     @CurrentUser() userData: IUserData,
@@ -43,26 +44,35 @@ export class CarsController {
   }
   @SkipAuth()
   @ApiOperation({ summary: 'Get one car by id' })
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.carsService.findOne(+id);
+  @Get(':carId')
+  public async findOne(
+    @Param('carId') carId: string,
+  ): Promise<CarsResponceDto> {
+    return await this.carsService.findOne(carId);
   }
   @ApiOperation({ summary: 'Change advertisement' })
   @ApiBearerAuth()
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCarDto: UpdateCarRequestDto) {
-    return this.carsService.update(+id, updateCarDto);
+  @Put(':carId')
+  public async update(
+    @Param('carId') carId: string,
+    @CurrentUser() userData: IUserData,
+    @Body() dto: UpdateCarRequestDto,
+  ): Promise<CarsResponceDto> {
+    return await this.carsService.update(carId, dto, userData);
   }
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete advertisement' })
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.carsService.remove(+id);
+  @Delete(':carId')
+  public async remove(
+    @Param('carId') carId: string,
+    @CurrentUser() userData: IUserData,
+  ): Promise<void> {
+    await this.carsService.remove(carId, userData);
   }
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all my advertisement' })
   @Get('My')
   findMy(@Param('id') id: string) {
-    return this.carsService.findOne(+id);
+    return this.carsService.findOne(id);
   }
 }
