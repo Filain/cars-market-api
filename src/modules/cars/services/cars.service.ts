@@ -4,9 +4,11 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 
+import { Role } from '../../../common/guard/enums/role.enum';
 import { CarsEntity } from '../../../database/entities/cars.entity';
 import { IUserData } from '../../auth/interfaces/user-data.interface';
 import { CarsRepository } from '../../repository/services/cars.repository';
+import { UserRepository } from '../../repository/services/user.repository';
 import { CarsListRequestDto } from '../dto/requses/cars-list.request.dto';
 import { CreateCarRequestDto } from '../dto/requses/create-car.request.dto';
 import { UpdateCarRequestDto } from '../dto/requses/update-car.request.dto';
@@ -16,7 +18,10 @@ import { CarsMapper } from './cars.mapper';
 
 @Injectable()
 export class CarsService {
-  constructor(private readonly carsRepository: CarsRepository) {}
+  constructor(
+    private readonly carsRepository: CarsRepository,
+    private userRepository: UserRepository,
+  ) {}
   public async create(dto: CreateCarRequestDto, userData: IUserData) {
     // const priceToString = dto.price.toString();
     const carsEntity = await this.carsRepository.save(
@@ -46,7 +51,9 @@ export class CarsService {
     dto: UpdateCarRequestDto,
     userData: IUserData,
   ) {
-    const car = await this.findMyOneByIdOrThrow(carId, userData.userId);
+    const car = await this.findMyOneByIdOrThrow(carId, userData);
+    //const car = await this.findMyOneByIdOrThrow(carId, userData.userId);
+
     const newCar = await this.carsRepository.save({
       ...car,
       ...dto,
@@ -55,24 +62,33 @@ export class CarsService {
   }
 
   public async remove(carId: string, userData: IUserData) {
-    const car = await this.findMyOneByIdOrThrow(carId, userData.userId);
+    const car = await this.findMyOneByIdOrThrow(carId, userData);
     await this.carsRepository.remove(car);
   }
 
   private async findMyOneByIdOrThrow(
     carId: string,
-    userId: string,
+    // userId: string,
+    userData: IUserData,
   ): Promise<CarsEntity> {
     const car = await this.carsRepository.findOneBy({
       id: carId,
     });
+    const user = await this.userRepository.findOneBy({
+      id: userData.userId,
+    });
+
     if (!car) {
       throw new UnprocessableEntityException();
     }
-    if (car.user_id !== userId) {
-      throw new ForbiddenException();
+    if (
+      user.roles === Role.Admin ||
+      car.user_id === userData.userId ||
+      user.roles === Role.Manager
+    ) {
+      return car;
     }
-    return car;
+    throw new ForbiddenException();
   }
   public async findMyCars(
     query: CarsListRequestDto,

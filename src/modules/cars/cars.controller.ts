@@ -10,6 +10,8 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+import { Roles } from '../../common/decorators/roles.decorator';
+import { Role } from '../../common/guard/enums/role.enum';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
 import { IUserData } from '../auth/interfaces/user-data.interface';
@@ -32,6 +34,7 @@ export class CarsController {
   ): Promise<CarsListResponseDto> {
     return await this.carsService.findAll(query);
   }
+  @Roles(Role.Admin, Role.Manager, Role.Seller)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Post advertisement' })
   @Post()
@@ -41,6 +44,7 @@ export class CarsController {
   ): Promise<CarsResponceDto> {
     return await this.carsService.create(dto, userData);
   }
+  @Roles(Role.Admin, Role.Manager, Role.Seller)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all my cars' })
   @Get('my-cars')
@@ -58,6 +62,7 @@ export class CarsController {
   ): Promise<CarsResponceDto> {
     return await this.carsService.findOne(carId);
   }
+  @Roles(Role.Admin, Role.Manager, Role.Seller)
   @ApiOperation({ summary: 'Change advertisement' })
   @ApiBearerAuth()
   @Put(':carId')
@@ -68,6 +73,7 @@ export class CarsController {
   ): Promise<CarsResponceDto> {
     return await this.carsService.update(carId, dto, userData);
   }
+  @Roles(Role.Admin, Role.Manager, Role.Seller)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete advertisement' })
   @Delete(':carId')

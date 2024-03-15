@@ -35,7 +35,7 @@ export class CarsRepository extends Repository<CarsEntity> {
     userData: IUserData,
   ): Promise<[CarsEntity[], number]> {
     const qb = this.createQueryBuilder('cars');
-    qb.andWhere('user_Id=:my', { my: userData.userId });
+    qb.andWhere('user_id=:my', { my: userData.userId });
 
     qb.addOrderBy('cars.created', 'DESC');
     qb.take(query.limit);

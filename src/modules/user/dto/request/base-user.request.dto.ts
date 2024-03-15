@@ -20,7 +20,7 @@ export class BaseUserRequestDto {
   @Type(() => String)
   name?: string;
 
-  @ApiProperty({ example: 'test@gmail.com' })
+  @ApiProperty({ example: 'test@example.com' })
   @IsString()
   @Length(0, 300)
   @Matches(/^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/)

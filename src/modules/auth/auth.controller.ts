@@ -38,7 +38,7 @@ export class AuthController {
   ): Promise<AuthUserResponseDto> {
     return await this.authService.signIn(dto);
   }
-
+  @Roles(Role.Seller, Role.User)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Change to Seller' })
   @Put('seller')
@@ -49,15 +49,6 @@ export class AuthController {
     return await this.authService.changeToSealer(userData);
   }
 
-  // @ApiBearerAuth()
-  // @ApiOperation({ summary: 'Change to Seller' })
-  // @Put('seller')
-  // public async changeToSealer(
-  //   @CurrentUser() userData: IUserData,
-  //   @Body() dto: UpdateUserToSallerRequestDto,
-  // ): Promise<UserResponseDto> {
-  //   return await this.authService.changeToSealer(userData, dto);
-  // }
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Logout' })
   @Post('logout')
