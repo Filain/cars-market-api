@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 
 import { CarsEntity } from '../../../database/entities/cars.entity';
+import { IUserData } from '../../auth/interfaces/user-data.interface';
 import { CarsListRequestDto } from '../../cars/dto/requses/cars-list.request.dto';
 
 @Injectable()
@@ -21,6 +22,20 @@ export class CarsRepository extends Repository<CarsEntity> {
     //   'follow',
     //   'follow.follower_id = :myId',
     // );
+
+    // qb.groupBy('id');
+
+    qb.addOrderBy('cars.created', 'DESC');
+    qb.take(query.limit);
+    qb.skip(query.offset);
+    return await qb.getManyAndCount();
+  }
+  public async findAllMyCars(
+    query: CarsListRequestDto,
+    userData: IUserData,
+  ): Promise<[CarsEntity[], number]> {
+    const qb = this.createQueryBuilder('cars');
+    qb.andWhere('user_Id=:my', { my: userData.userId });
 
     qb.addOrderBy('cars.created', 'DESC');
     qb.take(query.limit);

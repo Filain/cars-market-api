@@ -38,7 +38,7 @@ export class CarsService {
 
   public async findOne(carId: string): Promise<CarsResponceDto> {
     const entity = await this.carsRepository.findOneBy({ id: carId });
-    return entity;
+    return CarsMapper.toResponseDto(entity);
   }
 
   public async update(
@@ -73,5 +73,15 @@ export class CarsService {
       throw new ForbiddenException();
     }
     return car;
+  }
+  public async findMyCars(
+    query: CarsListRequestDto,
+    userData: IUserData,
+  ): Promise<CarsListResponseDto> {
+    const [entities, total] = await this.carsRepository.findAllMyCars(
+      query,
+      userData,
+    );
+    return CarsMapper.toListResponseDto(entities, total, query);
   }
 }

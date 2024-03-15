@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
   Put,
   Query,
@@ -42,6 +41,15 @@ export class CarsController {
   ): Promise<CarsResponceDto> {
     return await this.carsService.create(dto, userData);
   }
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get all my cars' })
+  @Get('my-cars')
+  public async findMyCars(
+    @Query() query: CarsListRequestDto,
+    @CurrentUser() userData: IUserData,
+  ): Promise<CarsListResponseDto> {
+    return await this.carsService.findMyCars(query, userData);
+  }
   @SkipAuth()
   @ApiOperation({ summary: 'Get one car by id' })
   @Get(':carId')
@@ -68,11 +76,5 @@ export class CarsController {
     @CurrentUser() userData: IUserData,
   ): Promise<void> {
     await this.carsService.remove(carId, userData);
-  }
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get all my advertisement' })
-  @Get('My')
-  findMy(@Param('id') id: string) {
-    return this.carsService.findOne(id);
   }
 }
