@@ -1,6 +1,6 @@
 import { UserResponseDto } from '../../../user/dto/response/user.response.dto';
 
-export class CarsResponceDto {
+export class AdvertisementResponceDto {
   brand: string;
   model: string;
   price: string;

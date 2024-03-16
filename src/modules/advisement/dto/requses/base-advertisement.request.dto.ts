@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class BaseCarRequestDto {
+export class BaseAdvertisementRequestDto {
   @IsString()
   brand: string;
 

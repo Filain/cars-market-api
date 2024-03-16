@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
 import { Role } from '../../common/guard/enums/role.enum';
-import { CarsEntity } from './cars.entity';
+import { AdvisementEntity } from './advisement.entity';
 import { BaseEntity } from './models/base.entity';
 import { RefreshTokenEntity } from './refresh-token.entity';
 
@@ -32,6 +32,6 @@ export class UserEntity extends BaseEntity {
   @OneToMany(() => RefreshTokenEntity, (entity) => entity.user)
   refreshTokens: RefreshTokenEntity[];
 
-  @OneToMany(() => CarsEntity, (entity) => entity.user)
-  cars: CarsEntity[];
+  @OneToMany(() => AdvisementEntity, (entity) => entity.user)
+  cars: AdvisementEntity[];
 }

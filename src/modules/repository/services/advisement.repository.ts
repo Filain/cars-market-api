@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 
-import { CarsEntity } from '../../../database/entities/cars.entity';
+import { AdvisementEntity } from '../../../database/entities/advisement.entity';
+import { AdvertisementListRequestDto } from '../../advisement/dto/requses/advertisement-list.request.dto';
 import { IUserData } from '../../auth/interfaces/user-data.interface';
-import { CarsListRequestDto } from '../../cars/dto/requses/cars-list.request.dto';
 
 @Injectable()
-export class CarsRepository extends Repository<CarsEntity> {
+export class AdvisementRepository extends Repository<AdvisementEntity> {
   constructor(private readonly dataSource: DataSource) {
-    super(CarsEntity, dataSource.manager);
+    super(AdvisementEntity, dataSource.manager);
   }
   public async findAll(
-    query: CarsListRequestDto,
-  ): Promise<[CarsEntity[], number]> {
+    query: AdvertisementListRequestDto,
+  ): Promise<[AdvisementEntity[], number]> {
     const qb = this.createQueryBuilder('cars');
     // qb.leftJoinAndSelect('article.likes', 'like', 'like.user_id = :myId');
     // qb.leftJoinAndSelect('article.user', 'user');
@@ -30,10 +30,10 @@ export class CarsRepository extends Repository<CarsEntity> {
     qb.skip(query.offset);
     return await qb.getManyAndCount();
   }
-  public async findAllMyCars(
-    query: CarsListRequestDto,
+  public async findAllMyAdvisement(
+    query: AdvertisementListRequestDto,
     userData: IUserData,
-  ): Promise<[CarsEntity[], number]> {
+  ): Promise<[AdvisementEntity[], number]> {
     const qb = this.createQueryBuilder('cars');
     qb.andWhere('user_id=:my', { my: userData.userId });
 

@@ -3,8 +3,8 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from './models/base.entity';
 import { UserEntity } from './user.entity';
 
-@Entity('cars')
-export class CarsEntity extends BaseEntity {
+@Entity('advisement')
+export class AdvisementEntity extends BaseEntity {
   @Column('text')
   brand: string;
 

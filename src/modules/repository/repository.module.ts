@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 
-import { CarsRepository } from './services/cars.repository';
+import { AdvisementRepository } from './services/advisement.repository';
 import { RefreshTokenRepository } from './services/refresh-token.repository';
 import { UserRepository } from './services/user.repository';
 
@@ -8,7 +8,7 @@ import { UserRepository } from './services/user.repository';
 @Module({
   imports: [],
   controllers: [],
-  providers: [CarsRepository, RefreshTokenRepository, UserRepository],
-  exports: [CarsRepository, RefreshTokenRepository, UserRepository],
+  providers: [AdvisementRepository, RefreshTokenRepository, UserRepository],
+  exports: [AdvisementRepository, RefreshTokenRepository, UserRepository],
 })
 export class RepositoryModule {}
