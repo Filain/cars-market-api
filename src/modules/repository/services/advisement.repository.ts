@@ -25,7 +25,7 @@ export class AdvisementRepository extends Repository<AdvisementEntity> {
 
     // qb.groupBy('id');
 
-    qb.addOrderBy('cars.created', 'DESC');
+    qb.addOrderBy('advisement.created', 'DESC');
     qb.take(query.limit);
     qb.skip(query.offset);
     return await qb.getManyAndCount();
@@ -34,10 +34,10 @@ export class AdvisementRepository extends Repository<AdvisementEntity> {
     query: AdvertisementListRequestDto,
     userData: IUserData,
   ): Promise<[AdvisementEntity[], number]> {
-    const qb = this.createQueryBuilder('cars');
+    const qb = this.createQueryBuilder('advisement');
     qb.andWhere('user_id=:my', { my: userData.userId });
 
-    qb.addOrderBy('cars.created', 'DESC');
+    qb.addOrderBy('advisement.created', 'DESC');
     qb.take(query.limit);
     qb.skip(query.offset);
     return await qb.getManyAndCount();
