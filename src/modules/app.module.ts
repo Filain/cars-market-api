@@ -1,15 +1,19 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
+import { ScheduleModule } from '@nestjs/schedule';
 
 import { RolesGuard } from '../common/guard/roles.guard';
 import configuration from '../configs/configs';
 import { AdvertisementModule } from './advisement/advertisement.module';
 import { AuthModule } from './auth/auth.module';
+import { BrandModule } from './brand/brand.module';
 import { HealthModule } from './health/health.module';
+import { ModelModule } from './model/model.module';
 import { PostgresModule } from './postgres/postgres.module';
 import { RedisModule } from './redis/redis.module';
 import { RepositoryModule } from './repository/repository.module';
+import { TaskModule } from './task/task.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -27,9 +31,13 @@ import { UserModule } from './user/user.module';
       load: [configuration],
       isGlobal: true,
     }),
+    ScheduleModule.forRoot(),
+    TaskModule,
     AuthModule,
     UserModule,
     AdvertisementModule,
+    BrandModule,
+    ModelModule,
     HealthModule,
     RepositoryModule,
   ],

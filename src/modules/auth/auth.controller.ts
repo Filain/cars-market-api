@@ -40,7 +40,7 @@ export class AuthController {
   }
   @Roles(Role.Seller, Role.User)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Change to Seller' })
+  @ApiOperation({ summary: 'Change to Seller or user' })
   @Put('seller')
   public async changeToSealer(
     @CurrentUser() userData: IUserData,

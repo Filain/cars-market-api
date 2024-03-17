@@ -12,7 +12,6 @@ import { UserService } from '../../user/services/user.service';
 import { SignInRequestDto } from '../dto/request/sign-in.request.dto';
 import { SignUpRequestDto } from '../dto/request/sign-up.request.dto';
 import { SignUpAdminRequestDto } from '../dto/request/sign-up-admin.request.dto';
-import { UpdateUserToSallerRequestDto } from '../dto/request/update-user-to-saller.request.dto';
 import { AuthUserResponseDto } from '../dto/response/auth-user.response.dto';
 import { TokenResponseDto } from '../dto/response/token.response.dto';
 import { IUserData } from '../interfaces/user-data.interface';
@@ -62,7 +61,13 @@ export class AuthService {
     const userEntity = await this.userRepository.findOneBy({
       id: userData.userId,
     });
-    userEntity.roles = Role.Seller;
+
+    if (userEntity.roles === Role.User) {
+      userEntity.roles = Role.Seller;
+    } else if (userEntity.roles === Role.Seller) {
+      userEntity.roles = Role.User;
+    }
+
     const user = await this.userRepository.save({ ...userEntity });
     return UserMapper.toResponseDto(user);
   }

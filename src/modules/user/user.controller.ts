@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Put } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
@@ -13,19 +13,14 @@ import { UserService } from './services/user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  // @SkipAuth()
-  // @Post()
-  // public async create(@Body() dto: CreateUserDto): Promise<UserResponseDto> {
-  //   return await this.userService.create(dto);
-  // }
-  //
-  // @Roles(Role.Admin)
   @SkipAuth()
+  @ApiOperation({ summary: 'Get all users' })
   @Get()
   public async findAll(): Promise<string> {
     return await this.userService.findAll();
   }
   @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get information about me' })
   @Get('me')
   public async findMe(
     @CurrentUser() userData: IUserData,
@@ -34,6 +29,7 @@ export class UserController {
   }
 
   @ApiBearerAuth()
+  @ApiOperation({ summary: 'Change information about me' })
   @Put('me')
   public async updateMe(
     @CurrentUser() userData: IUserData,
@@ -43,6 +39,7 @@ export class UserController {
   }
 
   @SkipAuth()
+  @ApiOperation({ summary: 'Get user about me' })
   @Get(':id')
   public async findOne(@Param('id') id: string): Promise<string> {
     return await this.userService.findOne(+id);
