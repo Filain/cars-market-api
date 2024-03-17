@@ -1,19 +1,24 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { isLogLevelEnabled } from '@nestjs/common/services/utils';
+import { ConfigService } from '@nestjs/config';
 
+import { BankConfig, Config } from '../../../configs/config.type';
 import { CurrencyRepository } from '../../repository/services/currency.repository';
 import { CurrencyMapper } from './currency.mapper';
 
 @Injectable()
 export class BankRequestService {
+  private bankConfig: BankConfig;
   constructor(
     private readonly httpService: HttpService,
     private readonly currencyRepository: CurrencyRepository,
-  ) {}
+    private readonly configService: ConfigService<Config>,
+  ) {
+    this.bankConfig = this.configService.get<BankConfig>('bank');
+  }
   public async getAndSave(): Promise<any> {
     const axiosResponse = await this.httpService.axiosRef.get(
-      'https://api.privatbank.ua/p24api/pubinfo?exchange&coursid=5',
+      this.bankConfig.bankURL,
     );
 
     const currencies = CurrencyMapper.toResponseDto(axiosResponse);
