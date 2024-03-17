@@ -58,8 +58,8 @@ async function bootstrap() {
     password: '123qwe!@#QWE',
     roles: Role.Admin,
   };
-  const maileA = await appAdminCreate.isAdmin(adminData.email);
-  if (!maileA) {
+  const ifAdmin = await appAdminCreate.isAdmin(adminData.email);
+  if (!ifAdmin) {
     await appAdminCreate.createAdmin(adminData);
     Logger.log('Admin user created successfully.');
   }

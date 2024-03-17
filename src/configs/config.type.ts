@@ -3,6 +3,7 @@ export type Config = {
   postgres: PostgresConfig;
   redis: RedisConfig;
   jwt: JWTConfig;
+  bank: BankConfig;
 };
 
 export type AppConfig = {
@@ -29,4 +30,8 @@ export type JWTConfig = {
   accessTokenExpiration: number;
   refreshTokenSecret: string;
   refreshTokenExpiration: number;
+};
+
+export type BankConfig = {
+  bankURL: string;
 };

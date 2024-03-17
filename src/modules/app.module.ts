@@ -13,7 +13,7 @@ import { ModelModule } from './model/model.module';
 import { PostgresModule } from './postgres/postgres.module';
 import { RedisModule } from './redis/redis.module';
 import { RepositoryModule } from './repository/repository.module';
-import { TaskModule } from './task/task.module';
+import { ShedulleModule } from './shedulle/shedulle.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -32,7 +32,7 @@ import { UserModule } from './user/user.module';
       isGlobal: true,
     }),
     ScheduleModule.forRoot(),
-    TaskModule,
+    ShedulleModule,
     AuthModule,
     UserModule,
     AdvertisementModule,
