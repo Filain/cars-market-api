@@ -3,8 +3,8 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from './models/base.entity';
 import { UserEntity } from './user.entity';
 
-@Entity('advisement')
-export class AdvisementEntity extends BaseEntity {
+@Entity('advertisement')
+export class AdvertisementEntity extends BaseEntity {
   @Column('text')
   brand: string;
 
@@ -16,6 +16,15 @@ export class AdvisementEntity extends BaseEntity {
 
   @Column('text')
   currency: string;
+
+  @Column('text')
+  priceFunc: string;
+
+  @Column('text')
+  year: string;
+
+  @Column('text')
+  region: string;
 
   @Column('text')
   description: string;

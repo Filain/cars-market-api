@@ -3,12 +3,12 @@ import { Module } from '@nestjs/common';
 
 import { CurrencyRepository } from '../repository/services/currency.repository';
 import { BankRequestService } from './services/bankRequest.service';
-import { ShedulleService } from './services/shedulle.service';
+import { SchedulesService } from './services/schedules.service';
 
 @Module({
   imports: [HttpModule],
   controllers: [],
-  providers: [ShedulleService, CurrencyRepository, BankRequestService],
-  exports: [ShedulleService],
+  providers: [SchedulesService, CurrencyRepository, BankRequestService],
+  exports: [SchedulesService],
 })
-export class ShedulleModule {}
+export class SchedulesModule {}

@@ -10,7 +10,7 @@ import { AppConfig, Config } from './configs/config.type';
 import { AppModule } from './modules/app.module';
 import { SignUpAdminRequestDto } from './modules/auth/dto/request/sign-up-admin.request.dto';
 import { AuthService } from './modules/auth/services/auth.service';
-import { BankRequestService } from './modules/shedulle/services/bankRequest.service';
+import { BankRequestService } from './modules/schedule/services/bankRequest.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -65,8 +65,7 @@ async function bootstrap() {
     Logger.log('Admin user created successfully.');
   }
 
-  // const appConfigBank = configService.get<AppConfig>('bank');
   const appCreateBankRequest = app.get(BankRequestService);
-  appCreateBankRequest.getAndSave();
+  await appCreateBankRequest.getAndSave();
 }
 void bootstrap();

@@ -4,7 +4,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { BankRequestService } from './bankRequest.service';
 
 @Injectable()
-export class ShedulleService {
+export class SchedulesService {
   constructor(private readonly bankRequestService: BankRequestService) {}
 
   @Cron(CronExpression.EVERY_MINUTE)

@@ -1,4 +1,4 @@
-import { AdvisementEntity } from '../../../database/entities/advisement.entity';
+import { AdvertisementEntity } from '../../../database/entities/advertisement.entity';
 import { UserMapper } from '../../user/services/user.mapper';
 import { AdvertisementListRequestDto } from '../dto/requses/advertisement-list.request.dto';
 import { AdvertisementResponceDto } from '../dto/response/advertisement.responce.dto';
@@ -6,25 +6,25 @@ import { AdvertisementListResponseDto } from '../dto/response/advertisement-list
 
 export class AdvertisementMapper {
   public static toResponseDto(
-    advisementEntity: AdvisementEntity,
+    advertisementEntity: AdvertisementEntity,
   ): AdvertisementResponceDto {
     return {
-      brand: advisementEntity.brand,
-      model: advisementEntity.model,
-      price: advisementEntity.price,
-      currency: advisementEntity.currency,
-      description: advisementEntity.description,
-      created: advisementEntity.created,
-      updated: advisementEntity.updated,
+      brand: advertisementEntity.brand,
+      model: advertisementEntity.model,
+      price: advertisementEntity.price,
+      currency: advertisementEntity.currency,
+      description: advertisementEntity.description,
+      created: advertisementEntity.created,
+      updated: advertisementEntity.updated,
 
-      user: advisementEntity.user
-        ? UserMapper.toResponseDto(advisementEntity.user)
+      user: advertisementEntity.user
+        ? UserMapper.toResponseDto(advertisementEntity.user)
         : null,
     };
   }
 
   public static toListResponseDto(
-    entities: AdvisementEntity[],
+    entities: AdvertisementEntity[],
     total: number,
     query: AdvertisementListRequestDto,
   ): AdvertisementListResponseDto {

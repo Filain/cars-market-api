@@ -5,9 +5,9 @@ import {
 } from '@nestjs/common';
 
 import { Role } from '../../../common/guard/enums/role.enum';
-import { AdvisementEntity } from '../../../database/entities/advisement.entity';
+import { AdvertisementEntity } from '../../../database/entities/advertisement.entity';
 import { IUserData } from '../../auth/interfaces/user-data.interface';
-import { AdvisementRepository } from '../../repository/services/advisement.repository';
+import { AdvertisementRepository } from '../../repository/services/advisement.repository';
 import { UserRepository } from '../../repository/services/user.repository';
 import { AdvertisementListRequestDto } from '../dto/requses/advertisement-list.request.dto';
 import { CreateAdvertisementRequestDto } from '../dto/requses/create-advertisement.request.dto';
@@ -19,12 +19,12 @@ import { AdvertisementMapper } from './advertisement.mapper';
 @Injectable()
 export class AdvertisementService {
   constructor(
-    private readonly advisementRepository: AdvisementRepository,
+    private readonly advertisementRepository: AdvertisementRepository,
     private userRepository: UserRepository,
   ) {}
   public async create(dto: CreateAdvertisementRequestDto, userData: IUserData) {
-    const advertisementEntity = await this.advisementRepository.save(
-      this.advisementRepository.create({
+    const advertisementEntity = await this.advertisementRepository.save(
+      this.advertisementRepository.create({
         ...dto,
         // price: priceToString,
         user_id: userData.userId,
@@ -36,14 +36,14 @@ export class AdvertisementService {
   public async findAll(
     query: AdvertisementListRequestDto,
   ): Promise<AdvertisementListResponseDto> {
-    const [entities, total] = await this.advisementRepository.findAll(query);
+    const [entities, total] = await this.advertisementRepository.findAll(query);
     return AdvertisementMapper.toListResponseDto(entities, total, query);
   }
 
   public async findOne(
     advertisementId: string,
   ): Promise<AdvertisementResponceDto> {
-    const entity = await this.advisementRepository.findOneBy({
+    const entity = await this.advertisementRepository.findOneBy({
       id: advertisementId,
     });
     return AdvertisementMapper.toResponseDto(entity);
@@ -54,53 +54,59 @@ export class AdvertisementService {
     dto: UpdateAdvertisementRequestDto,
     userData: IUserData,
   ) {
-    const advisement = await this.findMyOneByIdOrThrow(
+    const advertisement = await this.findMyOneByIdOrThrow(
       advertisementId,
       userData,
     );
 
-    const newAdvertisement = await this.advisementRepository.save({
-      ...advisement,
+    const newAdvertisement = await this.advertisementRepository.save({
+      ...advertisement,
       ...dto,
     });
     return AdvertisementMapper.toResponseDto(newAdvertisement);
   }
 
-  public async remove(advisementId: string, userData: IUserData) {
-    const advisement = await this.findMyOneByIdOrThrow(advisementId, userData);
-    await this.advisementRepository.remove(advisement);
+  public async remove(advertisementId: string, userData: IUserData) {
+    const advertisement = await this.findMyOneByIdOrThrow(
+      advertisementId,
+      userData,
+    );
+    await this.advertisementRepository.remove(advertisement);
   }
 
   private async findMyOneByIdOrThrow(
-    advisementId: string,
+    advertisementId: string,
     // userId: string,
     userData: IUserData,
-  ): Promise<AdvisementEntity> {
-    const advisement = await this.advisementRepository.findOneBy({
-      id: advisementId,
+  ): Promise<AdvertisementEntity> {
+    const advertisement = await this.advertisementRepository.findOneBy({
+      id: advertisementId,
     });
     const user = await this.userRepository.findOneBy({
       id: userData.userId,
     });
 
-    if (!advisement) {
+    if (!advertisement) {
       throw new UnprocessableEntityException();
     }
     if (
       user.roles === Role.Admin ||
-      advisement.user_id === userData.userId ||
+      advertisement.user_id === userData.userId ||
       user.roles === Role.Manager
     ) {
-      return advisement;
+      return advertisement;
     }
     throw new ForbiddenException();
   }
-  public async findMyAdvisement(
+  public async findMyAdvertisement(
     query: AdvertisementListRequestDto,
     userData: IUserData,
   ): Promise<AdvertisementListResponseDto> {
     const [entities, total] =
-      await this.advisementRepository.findAllMyAdvisement(query, userData);
+      await this.advertisementRepository.findAllMyAadvertisement(
+        query,
+        userData,
+      );
     return AdvertisementMapper.toListResponseDto(entities, total, query);
   }
 }

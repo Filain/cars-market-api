@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
 import { Role } from '../../common/guard/enums/role.enum';
-import { AdvisementEntity } from './advisement.entity';
+import { AdvertisementEntity } from './advertisement.entity';
 import { BaseEntity } from './models/base.entity';
 import { RefreshTokenEntity } from './refresh-token.entity';
 
@@ -26,12 +26,12 @@ export class UserEntity extends BaseEntity {
   })
   roles: Role;
 
-  @Column('text', { nullable: true })
+  @Column('boolean', { default: false })
   account?: boolean;
 
   @OneToMany(() => RefreshTokenEntity, (entity) => entity.user)
   refreshTokens: RefreshTokenEntity[];
 
-  @OneToMany(() => AdvisementEntity, (entity) => entity.user)
-  cars: AdvisementEntity[];
+  @OneToMany(() => AdvertisementEntity, (entity) => entity.user)
+  cars: AdvertisementEntity[];
 }

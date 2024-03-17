@@ -46,13 +46,13 @@ export class AdvertisementController {
   }
   @Roles(Role.Admin, Role.Manager, Role.Seller)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get all my advisement' })
+  @ApiOperation({ summary: 'Get all my advertisement' })
   @Get('my-advertisement')
   public async findMyAdvertisement(
     @Query() query: AdvertisementListRequestDto,
     @CurrentUser() userData: IUserData,
   ): Promise<AdvertisementListResponseDto> {
-    return await this.advertisementService.findMyAdvisement(query, userData);
+    return await this.advertisementService.findMyAdvertisement(query, userData);
   }
   @SkipAuth()
   @ApiOperation({ summary: 'Get one advertisement by id' })

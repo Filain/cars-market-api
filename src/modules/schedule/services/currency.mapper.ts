@@ -15,9 +15,6 @@ export class CurrencyMapper {
       buy: item.buy,
       sale: item.sale,
     }));
-
-    // Повертаємо масив об'єктів CurrencyResponseDto
-    // console.log('mappedData MAPPER', mappedData);
     return mappedData;
   }
 }
