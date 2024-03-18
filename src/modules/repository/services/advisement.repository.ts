@@ -14,17 +14,6 @@ export class AdvertisementRepository extends Repository<AdvertisementEntity> {
     query: AdvertisementListRequestDto,
   ): Promise<[AdvertisementEntity[], number]> {
     const qb = this.createQueryBuilder('cars');
-    // qb.leftJoinAndSelect('article.likes', 'like', 'like.user_id = :myId');
-    // qb.leftJoinAndSelect('article.user', 'user');
-    // qb.leftJoinAndSelect('article.tags', 'tag');
-    // qb.leftJoinAndSelect(
-    //   'user.followings',
-    //   'follow',
-    //   'follow.follower_id = :myId',
-    // );
-
-    // qb.groupBy('id');
-
     qb.addOrderBy('advisement.created', 'DESC');
     qb.take(query.limit);
     qb.skip(query.offset);

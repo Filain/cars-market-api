@@ -30,7 +30,7 @@ export class AdvertisementService {
         user_id: userData.userId,
       }),
     );
-    return advertisementEntity;
+    return AdvertisementMapper.toResponseDto(advertisementEntity);
   }
 
   public async findAll(

@@ -1,6 +1,5 @@
 import { Transform, Type } from 'class-transformer';
 import {
-  IsDate,
   IsEmail,
   IsInt,
   IsOptional,
