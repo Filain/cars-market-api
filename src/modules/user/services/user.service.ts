@@ -46,7 +46,6 @@ export class UserService {
   }
   public async findMe(userData: IUserData): Promise<UserResponseDto> {
     const entity = await this.userRepository.findOneBy({ id: userData.userId });
-    // console.log(UserMapper.toResponseDto(entity));
     return UserMapper.toResponseDto(entity);
   }
   public async isEmailUniqueOrThrow(email: string): Promise<void> {

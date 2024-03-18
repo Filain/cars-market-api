@@ -16,11 +16,10 @@ export class BankRequestService {
   ) {
     this.bankConfig = this.configService.get<BankConfig>('bank');
   }
-  public async getAndSave(): Promise<any> {
+  public async getAndSave(): Promise<void> {
     const axiosResponse = await this.httpService.axiosRef.get(
       this.bankConfig.bankURL,
     );
-
     const currencies = CurrencyMapper.toResponseDto(axiosResponse);
 
     // Перебір отриманих від API валют

@@ -43,20 +43,6 @@ export class AuthService {
     return admin;
   }
 
-  // public async changeToSealer(
-  //   userData: IUserData,
-  //   dto: UpdateUserToSallerRequestDto,
-  // ): Promise<UserResponseDto> {
-  //   const userEntity = await this.userRepository.findOneBy({
-  //     id: userData.userId,
-  //   });
-  //   console.log('userEntity', userEntity);
-  //   userEntity.roles = Role.Seller;
-  //   console.log('userEntity', userEntity);
-  //   const user = await this.userRepository.save({ ...userEntity, ...dto });
-  //   return UserMapper.toResponseDto(user);
-  // }
-
   public async changeToSealer(userData: IUserData): Promise<UserResponseDto> {
     const userEntity = await this.userRepository.findOneBy({
       id: userData.userId,
@@ -71,26 +57,6 @@ export class AuthService {
     const user = await this.userRepository.save({ ...userEntity });
     return UserMapper.toResponseDto(user);
   }
-
-  //   userData: IUserData): Promise<UserEntity> {
-  //   const user = await this.userRepository.findOneBy({
-  //     id: userData.userId,
-  //   });
-  //   if (!(user.roles = Role.Sealer)) {
-  //     await this.userRepository.save({user.roles = Role.Sealer});
-  //   }
-  //   return user;
-  // }
-  //
-  //
-  // public async updateMe(
-  //   userData: IUserData,
-  //   dto: UpdateUserRequestDto,
-  // ): Promise<UserResponseDto> {
-  //   const entity = await this.userRepository.findOneBy({ id: userData.userId });
-  //   const user = await this.userRepository.save({ ...entity, ...dto });
-  //   return UserMapper.toResponseDto(user);
-  // }
 
   public async createUser(
     dto: SignUpAdminRequestDto,
