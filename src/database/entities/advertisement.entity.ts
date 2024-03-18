@@ -17,14 +17,17 @@ export class AdvertisementEntity extends BaseEntity {
   @Column('text')
   currency: string;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   priceFunc: string;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   year: string;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   region: string;
+
+  @Column('text', { nullable: true })
+  isValidate: string;
 
   @Column('text')
   description: string;
