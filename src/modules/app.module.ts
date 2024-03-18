@@ -5,7 +5,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 
 import { RolesGuard } from '../common/guard/roles.guard';
 import configuration from '../configs/configs';
-import { AdvertisementModule } from './advisement/advertisement.module';
+import { AdvertisementModule } from './advertisement/advertisement.module';
 import { AuthModule } from './auth/auth.module';
 import { BrandModule } from './brand/brand.module';
 import { HealthModule } from './health/health.module';

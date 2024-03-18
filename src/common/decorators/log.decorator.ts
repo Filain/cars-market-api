@@ -7,7 +7,6 @@ export function Log() {
       Logger.log('start req: ');
       const result = original.apply(this, args);
       Logger.log('end req: ');
-      // descriptor.
       return result;
     };
   };

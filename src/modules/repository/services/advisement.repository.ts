@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 
 import { AdvertisementEntity } from '../../../database/entities/advertisement.entity';
-import { AdvertisementListRequestDto } from '../../advisement/dto/requses/advertisement-list.request.dto';
+import { AdvertisementListRequestDto } from '../../advertisement/dto/requses/advertisement-list.request.dto';
 import { IUserData } from '../../auth/interfaces/user-data.interface';
 
 @Injectable()
