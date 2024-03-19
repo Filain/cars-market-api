@@ -24,9 +24,18 @@ export class AdvertisementService {
   constructor(
     private readonly advertisementRepository: AdvertisementRepository,
     private readonly currencyRepository: CurrencyRepository,
+
     private userRepository: UserRepository,
   ) {}
+
+  // TO DO
   public async create(dto: CreateAdvertisementRequestDto, userData: IUserData) {
+    // // Перевірка чи існує модель авто
+    // const carModel = await this.carModelService.find();
+    // if (!carModel) {
+    //   throw new Error('Модель авто не знайдена');
+    // }
+
     const advertisementEntity = await this.advertisementRepository.save(
       this.advertisementRepository.create({
         ...dto,
@@ -36,7 +45,7 @@ export class AdvertisementService {
     );
     return AdvertisementMapper.toResponseCreateDto(advertisementEntity);
   }
-  // TO DO
+
   public async findAll(
     query: AdvertisementListRequestDto,
   ): Promise<AdvertisementListResponseDto> {
@@ -64,8 +73,8 @@ export class AdvertisementService {
 
     if (entity.currency === 'UAH') {
       uah = +entity.price;
-      eur = entity.price * EUR.sale;
-      usd = entity.price * USD.sale;
+      eur = entity.price / EUR.sale;
+      usd = entity.price / USD.sale;
     } else if (entity.currency === 'EUR') {
       uah = entity.price * EUR.buy;
       eur = +entity.price;
