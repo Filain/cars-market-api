@@ -4,40 +4,58 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
+  Put,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+import { Roles } from '../../common/decorators/roles.decorator';
+import { Role } from '../../common/guard/enums/role.enum';
+import { CarBrandEntity } from '../../database/entities/car-brand.entity';
+import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
 import { BrandService } from './brand.service';
-import { CreateBrandDto } from './dto/create-brand.dto';
-import { UpdateBrandDto } from './dto/update-brand.dto';
+import { CreateBrandRequstDto } from './dto/request/create-brand.requst.dto';
+import { UpdateBrandRequstDto } from './dto/request/update-brand.requst.dto';
 
+@ApiTags('Brand manager')
 @Controller('brand')
 export class BrandController {
   constructor(private readonly brandService: BrandService) {}
 
+  @Roles(Role.Admin, Role.Manager)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Admin and Manager can create brand here' })
   @Post()
-  create(@Body() createBrandDto: CreateBrandDto) {
-    return this.brandService.create(createBrandDto);
+  public async create(
+    @Body() dto: CreateBrandRequstDto,
+  ): Promise<CarBrandEntity> {
+    return await this.brandService.create(dto);
   }
-
+  @SkipAuth()
   @Get()
-  findAll() {
-    return this.brandService.findAll();
+  public async findAll() {
+    return await this.brandService.findAll();
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.brandService.findOne(+id);
+  @SkipAuth()
+  @Get(':brand')
+  public async findOne(@Param('brand') brand: string) {
+    return await this.brandService.findOne(brand);
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBrandDto: UpdateBrandDto) {
-    return this.brandService.update(+id, updateBrandDto);
+  @Roles(Role.Admin, Role.Manager)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Admin and Manager can update brand here' })
+  @Put(':brand')
+  public async update(
+    @Param('brand') brand: string,
+    @Body() dto: UpdateBrandRequstDto,
+  ) {
+    return await this.brandService.update(brand, dto);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.brandService.remove(+id);
+  @Roles(Role.Admin, Role.Manager)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Admin and Manager can delete brand here' })
+  @Delete(':brand')
+  public async remove(@Param('brand') brand: string): Promise<void> {
+    return await this.brandService.remove(brand);
   }
 }

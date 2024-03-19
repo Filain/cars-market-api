@@ -24,11 +24,8 @@ export class AdvertisementService {
   constructor(
     private readonly advertisementRepository: AdvertisementRepository,
     private readonly currencyRepository: CurrencyRepository,
-
     private userRepository: UserRepository,
   ) {}
-
-  // TO DO
   public async create(dto: CreateAdvertisementRequestDto, userData: IUserData) {
     // // Перевірка чи існує модель авто
     // const carModel = await this.carModelService.find();
@@ -45,7 +42,7 @@ export class AdvertisementService {
     );
     return AdvertisementMapper.toResponseCreateDto(advertisementEntity);
   }
-
+  // TO DO
   public async findAll(
     query: AdvertisementListRequestDto,
   ): Promise<AdvertisementListResponseDto> {

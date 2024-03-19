@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 
-import { CreateModelDto } from './dto/create-model.dto';
-import { UpdateModelDto } from './dto/update-model.dto';
+import { CreateModelDto } from './dto/request/create-model.dto';
+import { UpdateModelDto } from './dto/request/update-model.dto';
 
 @Injectable()
 export class ModelService {
+  // constructor(private readonly userService: UserService) {}
   create(createModelDto: CreateModelDto) {
     return 'This action adds a new model';
   }

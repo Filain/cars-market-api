@@ -7,15 +7,18 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
-import { CreateModelDto } from './dto/create-model.dto';
-import { UpdateModelDto } from './dto/update-model.dto';
+import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
+import { CreateModelDto } from './dto/request/create-model.dto';
+import { UpdateModelDto } from './dto/request/update-model.dto';
 import { ModelService } from './model.service';
 
+@ApiTags('Manager model')
 @Controller('model')
 export class ModelController {
   constructor(private readonly modelService: ModelService) {}
-
+  @SkipAuth()
   @Post()
   create(@Body() createModelDto: CreateModelDto) {
     return this.modelService.create(createModelDto);

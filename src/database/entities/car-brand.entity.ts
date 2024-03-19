@@ -5,7 +5,7 @@ import { BaseEntity } from './models/base.entity';
 
 @Entity('car-brand')
 export class CarBrandEntity extends BaseEntity {
-  @Column('text')
+  @Column('text', { unique: true })
   brand: string;
   @OneToMany(() => CarModelEntity, (entity) => entity.brand)
   model: CarModelEntity[];
