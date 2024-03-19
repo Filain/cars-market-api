@@ -13,8 +13,8 @@ export class AdvertisementRepository extends Repository<AdvertisementEntity> {
   public async findAll(
     query: AdvertisementListRequestDto,
   ): Promise<[AdvertisementEntity[], number]> {
-    const qb = this.createQueryBuilder('cars');
-    qb.addOrderBy('advisement.created', 'DESC');
+    const qb = this.createQueryBuilder('advertisement');
+    qb.addOrderBy('advertisement.created', 'DESC');
     qb.take(query.limit);
     qb.skip(query.offset);
     return await qb.getManyAndCount();

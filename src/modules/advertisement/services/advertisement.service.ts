@@ -3,23 +3,27 @@ import {
   Injectable,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { isLogLevelEnabled } from '@nestjs/common/services/utils';
 
 import { Role } from '../../../common/guard/enums/role.enum';
 import { AdvertisementEntity } from '../../../database/entities/advertisement.entity';
 import { IUserData } from '../../auth/interfaces/user-data.interface';
-import { AdvertisementRepository } from '../../repository/services/advisement.repository';
+import { AdvertisementRepository } from '../../repository/services/advirtisement.repository';
+import { CurrencyRepository } from '../../repository/services/currency.repository';
 import { UserRepository } from '../../repository/services/user.repository';
 import { AdvertisementListRequestDto } from '../dto/requses/advertisement-list.request.dto';
 import { CreateAdvertisementRequestDto } from '../dto/requses/create-advertisement.request.dto';
 import { UpdateAdvertisementRequestDto } from '../dto/requses/update-advertisement.request.dto';
 import { AdvertisementResponceDto } from '../dto/response/advertisement.responce.dto';
 import { AdvertisementListResponseDto } from '../dto/response/advertisement-list.response.dto';
+import { AdvertisementWithPrices } from '../interfaces/price.interface';
 import { AdvertisementMapper } from './advertisement.mapper';
 
 @Injectable()
 export class AdvertisementService {
   constructor(
     private readonly advertisementRepository: AdvertisementRepository,
+    private readonly currencyRepository: CurrencyRepository,
     private userRepository: UserRepository,
   ) {}
   public async create(dto: CreateAdvertisementRequestDto, userData: IUserData) {
@@ -30,9 +34,9 @@ export class AdvertisementService {
         user_id: userData.userId,
       }),
     );
-    return AdvertisementMapper.toResponseDto(advertisementEntity);
+    return AdvertisementMapper.toResponseCreateDto(advertisementEntity);
   }
-
+  // TO DO
   public async findAll(
     query: AdvertisementListRequestDto,
   ): Promise<AdvertisementListResponseDto> {
@@ -46,7 +50,32 @@ export class AdvertisementService {
     const entity = await this.advertisementRepository.findOneBy({
       id: advertisementId,
     });
-    return AdvertisementMapper.toResponseDto(entity);
+    const entityWithPrices = await this.calculatePrices(entity);
+    return AdvertisementMapper.toResponseDto(entityWithPrices);
+  }
+
+  private async calculatePrices(
+    entity: AdvertisementEntity,
+  ): Promise<AdvertisementWithPrices> {
+    const EUR = await this.currencyRepository.findOneBy({ ccy: 'EUR' });
+    const USD = await this.currencyRepository.findOneBy({ ccy: 'USD' });
+
+    let uah: number, eur: number, usd: number;
+
+    if (entity.currency === 'UAH') {
+      uah = +entity.price;
+      eur = entity.price * EUR.sale;
+      usd = entity.price * USD.sale;
+    } else if (entity.currency === 'EUR') {
+      uah = entity.price * EUR.buy;
+      eur = +entity.price;
+      usd = (entity.price * USD.buy) / EUR.sale;
+    } else {
+      uah = entity.price * USD.buy;
+      eur = (entity.price * USD.buy) / EUR.sale;
+      usd = +entity.price;
+    }
+    return { ...entity, uah, eur, usd };
   }
 
   public async update(
@@ -63,7 +92,7 @@ export class AdvertisementService {
       ...advertisement,
       ...dto,
     });
-    return AdvertisementMapper.toResponseDto(newAdvertisement);
+    return AdvertisementMapper.toResponseCreateDto(newAdvertisement);
   }
 
   public async remove(advertisementId: string, userData: IUserData) {

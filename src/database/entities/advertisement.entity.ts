@@ -12,7 +12,7 @@ export class AdvertisementEntity extends BaseEntity {
   model: string;
 
   @Column('text')
-  price: string;
+  price: number;
 
   @Column('text')
   currency: string;

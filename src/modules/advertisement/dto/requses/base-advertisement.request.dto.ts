@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsInt, IsString } from 'class-validator';
 
 export class BaseAdvertisementRequestDto {
   @IsString()
@@ -7,11 +7,11 @@ export class BaseAdvertisementRequestDto {
   @IsString()
   model: string;
 
-  @IsString()
-  price: string;
+  // @IsString()
+  // price: string;
 
-  // @IsInt()
-  // price: number;
+  @IsInt()
+  price: number;
 
   @IsString()
   currency: string;

@@ -3,9 +3,31 @@ import { UserMapper } from '../../user/services/user.mapper';
 import { AdvertisementListRequestDto } from '../dto/requses/advertisement-list.request.dto';
 import { AdvertisementResponceDto } from '../dto/response/advertisement.responce.dto';
 import { AdvertisementListResponseDto } from '../dto/response/advertisement-list.response.dto';
+import { AdvertisementWithPrices } from '../interfaces/price.interface';
 
 export class AdvertisementMapper {
   public static toResponseDto(
+    advertisementWithPrices: AdvertisementWithPrices,
+  ): AdvertisementResponceDto {
+    return {
+      brand: advertisementWithPrices.brand,
+      model: advertisementWithPrices.model,
+      price: advertisementWithPrices.price,
+      currency: advertisementWithPrices.currency,
+      description: advertisementWithPrices.description,
+      created: advertisementWithPrices.created,
+      updated: advertisementWithPrices.updated,
+      uah: advertisementWithPrices.uah,
+      eur: advertisementWithPrices.eur,
+      usd: advertisementWithPrices.usd,
+
+      user: advertisementWithPrices.user
+        ? UserMapper.toResponseDto(advertisementWithPrices.user)
+        : null,
+    };
+  }
+
+  public static toResponseCreateDto(
     advertisementEntity: AdvertisementEntity,
   ): AdvertisementResponceDto {
     return {
@@ -29,7 +51,7 @@ export class AdvertisementMapper {
     query: AdvertisementListRequestDto,
   ): AdvertisementListResponseDto {
     return {
-      data: entities.map(this.toResponseDto),
+      data: entities.map(this.toResponseCreateDto),
       meta: {
         limit: query.limit,
         offset: query.offset,

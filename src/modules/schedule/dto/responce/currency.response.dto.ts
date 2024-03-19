@@ -5,7 +5,7 @@ export class CurrencyResponseDto {
 
   base_ccy: string;
 
-  buy: string;
+  buy: number;
 
-  sale: string;
+  sale: number;
 }

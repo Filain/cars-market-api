@@ -8,8 +8,8 @@ export class BaseCurrencyRequestDto {
   base_ccy: string;
 
   @IsString()
-  buy: string;
+  buy: number;
 
   @IsString()
-  sale: string;
+  sale: number;
 }

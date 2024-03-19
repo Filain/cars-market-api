@@ -11,8 +11,8 @@ export class CurrencyEntity extends BaseEntity {
   base_ccy: string;
 
   @Column('text')
-  buy: string;
+  buy: number;
 
   @Column('text')
-  sale: string;
+  sale: number;
 }
