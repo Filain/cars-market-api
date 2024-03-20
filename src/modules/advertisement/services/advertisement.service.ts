@@ -3,7 +3,6 @@ import {
   Injectable,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { isLogLevelEnabled } from '@nestjs/common/services/utils';
 
 import { Role } from '../../../common/guard/enums/role.enum';
 import { AdvertisementEntity } from '../../../database/entities/advertisement.entity';

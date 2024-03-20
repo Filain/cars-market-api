@@ -1,6 +1,9 @@
 import { IsString } from 'class-validator';
 
-export class CreateModelDto {
+export class BaseModelRequestDto {
   @IsString()
   model: string;
+
+  @IsString()
+  brand: string;
 }

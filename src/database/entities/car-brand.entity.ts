@@ -8,5 +8,5 @@ export class CarBrandEntity extends BaseEntity {
   @Column('text', { unique: true })
   brand: string;
   @OneToMany(() => CarModelEntity, (entity) => entity.brand)
-  model: CarModelEntity[];
+  model?: CarModelEntity[];
 }

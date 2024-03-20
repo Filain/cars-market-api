@@ -4,43 +4,50 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
+  Put,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
-import { CreateModelDto } from './dto/request/create-model.dto';
-import { UpdateModelDto } from './dto/request/update-model.dto';
-import { ModelService } from './model.service';
+import { BaseModelRequestDto } from './dto/request/base-model.request.dto';
+import { ModelResponseDto } from './dto/response/model.response.dto';
+import { ModelListResponseDto } from './dto/response/model-list.response.dto';
+import { ModelService } from './services/model.service';
 
-@ApiTags('Manager model')
+@ApiTags('Model manager')
 @Controller('model')
 export class ModelController {
   constructor(private readonly modelService: ModelService) {}
   @SkipAuth()
+  @ApiOperation({ summary: 'Admin and Manager can create model here' })
   @Post()
-  create(@Body() createModelDto: CreateModelDto) {
-    return this.modelService.create(createModelDto);
+  public async create(
+    @Body() dto: BaseModelRequestDto,
+  ): Promise<ModelResponseDto> {
+    return await this.modelService.create(dto);
+  }
+  @SkipAuth()
+  @Get(':brand')
+  public async findAll(
+    @Param('brand') brand: string,
+  ): Promise<ModelListResponseDto> {
+    return await this.modelService.findAll(brand);
   }
 
-  @Get()
-  findAll() {
-    return this.modelService.findAll();
+  @SkipAuth()
+  @ApiOperation({ summary: 'Admin and Manager can create model here' })
+  @Put(':model')
+  public async update(
+    @Param('model') model: string,
+    @Body() dto: BaseModelRequestDto,
+  ): Promise<ModelResponseDto> {
+    return await this.modelService.update(model, dto);
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.modelService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateModelDto: UpdateModelDto) {
-    return this.modelService.update(+id, updateModelDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.modelService.remove(+id);
+  @SkipAuth()
+  @ApiOperation({ summary: 'Admin and Manager can delete model here' })
+  @Delete(':model')
+  public async remove(@Param('model') model: string) {
+    return await this.modelService.remove(model);
   }
 }

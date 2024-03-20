@@ -7,7 +7,7 @@ import { BankRequestService } from './bankRequest.service';
 export class SchedulesService {
   constructor(private readonly bankRequestService: BankRequestService) {}
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_DAY_AT_10AM)
   async handleCron(): Promise<void> {
     Logger.log('Updated exchange rates have been launched');
     await this.bankRequestService.getAndSave();

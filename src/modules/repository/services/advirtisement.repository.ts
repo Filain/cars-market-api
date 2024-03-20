@@ -26,7 +26,7 @@ export class AdvertisementRepository extends Repository<AdvertisementEntity> {
   ): Promise<[AdvertisementEntity[], number]> {
     const qb = this.createQueryBuilder('advertisement');
     qb.andWhere('user_id=:my', { my: userData.userId });
-
+    qb.leftJoinAndSelect('advertisement.user', 'user');
     qb.addOrderBy('advertisement.created', 'DESC');
     qb.take(query.limit);
     qb.skip(query.offset);
