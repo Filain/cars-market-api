@@ -1,3 +1,5 @@
+import { EAccountTypes } from '../../enums/account-types.enum';
+
 export class UserResponseDto {
   id: string;
 
@@ -5,7 +7,7 @@ export class UserResponseDto {
 
   email: string;
 
-  account?: boolean;
+  accountType?: EAccountTypes;
 
   roles: string;
 }

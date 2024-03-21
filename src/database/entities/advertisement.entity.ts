@@ -1,36 +1,54 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
+import { EStatus } from '../../modules/advertisement/enums/car-status.enum';
+import { ECurrency } from '../../modules/advertisement/enums/currency.enum';
+import { ERegion } from '../../modules/advertisement/enums/region.enum';
 import { BaseEntity } from './models/base.entity';
 import { UserEntity } from './user.entity';
 
 @Entity('advertisement')
 export class AdvertisementEntity extends BaseEntity {
-  @Column('text')
+  @Column({ type: 'text' })
+  title: string;
+
+  @Column({ type: 'text' })
   brand: string;
 
-  @Column('text')
+  @Column({ type: 'text' })
   model: string;
 
-  @Column('text')
+  @Column({ type: 'text' })
+  description: string;
+
+  @Column({ type: 'int' })
+  year: number;
+
+  @Column({ type: 'enum', enum: ERegion, default: ERegion.UNDEFINED })
+  region: ERegion;
+
+  @Column({ type: 'numeric', precision: 10, scale: 2 })
   price: number;
 
-  @Column('text')
-  currency: string;
+  @Column({ type: 'enum', enum: ECurrency, default: ECurrency.UAH })
+  currency: ECurrency;
 
-  @Column('text', { nullable: true })
-  priceFunc: string;
+  @Column({ type: 'numeric', precision: 10, scale: 2, nullable: true })
+  priceFunc: number;
 
-  @Column('text', { nullable: true })
-  year: string;
+  @Column({ type: 'enum', enum: EStatus, default: EStatus.NOT_ACTIVE })
+  isValidate: EStatus;
 
-  @Column('text', { nullable: true })
-  region: string;
+  @Column({ type: 'int', default: 0 })
+  totalViews?: number;
 
-  @Column('text', { nullable: true })
-  isValidate: string;
+  @Column({ type: 'int', default: 0 })
+  viewsToday?: number;
 
-  @Column('text')
-  description: string;
+  @Column({ type: 'int', default: 0 })
+  viewsThisWeek?: number;
+
+  @Column({ type: 'int', default: 0 })
+  viewsThisMonth?: number;
 
   @Column()
   user_id: string;

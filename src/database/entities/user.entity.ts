@@ -1,37 +1,37 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
 import { Role } from '../../common/guard/enums/role.enum';
+import { EAccountTypes } from '../../modules/user/enums/account-types.enum';
 import { AdvertisementEntity } from './advertisement.entity';
 import { BaseEntity } from './models/base.entity';
 import { RefreshTokenEntity } from './refresh-token.entity';
 
 @Entity('users')
 export class UserEntity extends BaseEntity {
-  @Column('text', { nullable: true })
+  @Column({ type: 'text', nullable: true })
   name?: string;
 
-  @Column('text', { unique: true })
+  @Column({ type: 'text', unique: true })
   email: string;
 
-  @Column('text')
+  @Column({ type: 'text' })
   deviceId: string;
 
-  @Column('text', { select: false })
+  @Column({ type: 'text', select: false })
   password: string;
 
-  @Column({
-    type: 'enum',
-    enum: Role,
-    default: Role.User,
-  })
+  @Column({ type: 'enum', enum: Role, default: Role.User })
   roles: Role;
 
-  @Column('boolean', { default: false })
-  account?: boolean;
+  @Column({ type: 'enum', enum: EAccountTypes, default: EAccountTypes.BASIC })
+  accountType: EAccountTypes;
+
+  @Column({ type: 'boolean', default: false })
+  blocked: boolean;
 
   @OneToMany(() => RefreshTokenEntity, (entity) => entity.user)
-  refreshTokens: RefreshTokenEntity[];
+  refreshTokens?: RefreshTokenEntity[];
 
   @OneToMany(() => AdvertisementEntity, (entity) => entity.user)
-  cars: AdvertisementEntity[];
+  cars?: AdvertisementEntity[];
 }

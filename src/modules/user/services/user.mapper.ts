@@ -7,7 +7,7 @@ export class UserMapper {
       id: userEntity.id,
       name: userEntity.name,
       email: userEntity.email,
-      account: userEntity.account,
+      accountType: userEntity.accountType,
       roles: userEntity.roles,
     };
   }
