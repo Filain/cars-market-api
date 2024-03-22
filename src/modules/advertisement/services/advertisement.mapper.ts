@@ -17,6 +17,7 @@ export class AdvertisementMapper {
       description: advertisementWithPrices.description,
       created: advertisementWithPrices.created,
       updated: advertisementWithPrices.updated,
+      isValidate: advertisementWithPrices.isValidate,
       uah: advertisementWithPrices.uah,
       eur: advertisementWithPrices.eur,
       usd: advertisementWithPrices.usd,
@@ -38,6 +39,7 @@ export class AdvertisementMapper {
       description: advertisementEntity.description,
       created: advertisementEntity.created,
       updated: advertisementEntity.updated,
+      isValidate: advertisementEntity.isValidate,
 
       user: advertisementEntity.user
         ? UserMapper.toResponseDto(advertisementEntity.user)

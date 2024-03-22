@@ -20,6 +20,7 @@ export class AdvertisementRepository extends Repository<AdvertisementEntity> {
     qb.skip(query.offset);
     return await qb.getManyAndCount();
   }
+
   public async findAllMyAadvertisement(
     query: AdvertisementListRequestDto,
     userData: IUserData,

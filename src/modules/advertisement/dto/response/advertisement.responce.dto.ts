@@ -8,6 +8,7 @@ export class AdvertisementResponceDto {
   description: string;
   created: Date;
   updated: Date;
+  isValidate: string;
   uah?: number;
   eur?: number;
   usd?: number;

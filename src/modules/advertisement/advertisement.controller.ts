@@ -12,6 +12,7 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { Roles } from '../../common/decorators/roles.decorator';
+import { BannedWordsGuards } from '../../common/guard/banned-words.guards';
 import { BrandAndModelGuard } from '../../common/guard/brandAndModel.guard';
 import { Role } from '../../common/guard/enums/role.enum';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
@@ -37,7 +38,7 @@ export class AdvertisementController {
     return await this.advertisementService.findAll(query);
   }
   @Roles(Role.Admin, Role.Manager, Role.Seller)
-  @UseGuards(BrandAndModelGuard)
+  @UseGuards(BrandAndModelGuard, BannedWordsGuards)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Post advertisement' })
   @Post()

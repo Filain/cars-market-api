@@ -15,6 +15,7 @@ import { CreateAdvertisementRequestDto } from '../dto/requses/create-advertiseme
 import { UpdateAdvertisementRequestDto } from '../dto/requses/update-advertisement.request.dto';
 import { AdvertisementResponceDto } from '../dto/response/advertisement.responce.dto';
 import { AdvertisementListResponseDto } from '../dto/response/advertisement-list.response.dto';
+import { EStatus } from '../enums/car-status.enum';
 import { AdvertisementWithPrices } from '../interfaces/price.interface';
 import { AdvertisementMapper } from './advertisement.mapper';
 
@@ -26,22 +27,17 @@ export class AdvertisementService {
     private userRepository: UserRepository,
   ) {}
   public async create(dto: CreateAdvertisementRequestDto, userData: IUserData) {
-    // // Перевірка чи існує модель авто
-    // const carModel = await this.carModelService.find();
-    // if (!carModel) {
-    //   throw new Error('Модель авто не знайдена');
-    // }
-
     const advertisementEntity = await this.advertisementRepository.save(
       this.advertisementRepository.create({
         ...dto,
         // price: priceToString,
         user_id: userData.userId,
+        isValidate: EStatus.ACTIVE,
       }),
     );
     return AdvertisementMapper.toResponseCreateDto(advertisementEntity);
   }
-  // TO DO
+
   public async findAll(
     query: AdvertisementListRequestDto,
   ): Promise<AdvertisementListResponseDto> {
@@ -52,8 +48,9 @@ export class AdvertisementService {
   public async findOne(
     advertisementId: string,
   ): Promise<AdvertisementResponceDto> {
-    const entity = await this.advertisementRepository.findOneBy({
-      id: advertisementId,
+    const entity = await this.advertisementRepository.findOne({
+      where: { id: advertisementId },
+      relations: { user: true },
     });
     const entityWithPrices = await this.calculatePrices(entity);
     return AdvertisementMapper.toResponseDto(entityWithPrices);
