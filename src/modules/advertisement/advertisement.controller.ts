@@ -15,6 +15,7 @@ import { Roles } from '../../common/decorators/roles.decorator';
 import { BannedWordsGuards } from '../../common/guard/banned-words.guards';
 import { BrandAndModelGuard } from '../../common/guard/brandAndModel.guard';
 import { Role } from '../../common/guard/enums/role.enum';
+import { SellingLimits } from '../../common/guard/selling-limits';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
 import { IUserData } from '../auth/interfaces/user-data.interface';
@@ -38,7 +39,7 @@ export class AdvertisementController {
     return await this.advertisementService.findAll(query);
   }
   @Roles(Role.Admin, Role.Manager, Role.Seller)
-  @UseGuards(BrandAndModelGuard, BannedWordsGuards)
+  @UseGuards(BrandAndModelGuard, SellingLimits, BannedWordsGuards)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Post advertisement' })
   @Post()

@@ -11,6 +11,7 @@ import { AppModule } from './modules/app.module';
 import { SignUpAdminRequestDto } from './modules/auth/dto/request/sign-up-admin.request.dto';
 import { AuthService } from './modules/auth/services/auth.service';
 import { BankRequestService } from './modules/schedule/services/bankRequest.service';
+import { EAccountTypes } from './modules/user/enums/account-types.enum';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -58,6 +59,7 @@ async function bootstrap() {
     email: 'admin@example.com',
     password: '123qwe!@#QWE',
     roles: Role.Admin,
+    accountType: EAccountTypes.PREMIUM,
   };
   const ifAdmin = await appAdminCreate.isAdmin(adminData.email);
   if (!ifAdmin) {
