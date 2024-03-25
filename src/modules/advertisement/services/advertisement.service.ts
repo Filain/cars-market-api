@@ -78,6 +78,7 @@ export class AdvertisementService {
     const account = await this.userRepository.findOneBy({
       id: userData.userId,
     });
+
     if (account.accountType === EAccountTypes.PREMIUM) {
       const dayViews =
         await this.viewRepository.findViewsByDay(advertisementId);
