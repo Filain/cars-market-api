@@ -1,10 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 import { EStatus } from '../../modules/advertisement/enums/car-status.enum';
 import { ECurrency } from '../../modules/advertisement/enums/currency.enum';
 import { ERegion } from '../../modules/advertisement/enums/region.enum';
 import { BaseEntity } from './models/base.entity';
 import { UserEntity } from './user.entity';
+import { ViewEntity } from './view.entity';
 
 @Entity('advertisement')
 export class AdvertisementEntity extends BaseEntity {
@@ -38,21 +39,15 @@ export class AdvertisementEntity extends BaseEntity {
   @Column({ type: 'enum', enum: EStatus, default: EStatus.NOT_ACTIVE })
   isValidate: EStatus;
 
-  @Column({ type: 'int', default: 0 })
-  totalViews?: number;
-
-  @Column({ type: 'int', default: 0 })
-  viewsToday?: number;
-
-  @Column({ type: 'int', default: 0 })
-  viewsThisWeek?: number;
-
-  @Column({ type: 'int', default: 0 })
-  viewsThisMonth?: number;
-
   @Column()
   user_id: string;
-  @ManyToOne(() => UserEntity, (entity) => entity.cars)
+  @ManyToOne(() => UserEntity, (entity) => entity.advertisement)
   @JoinColumn({ name: 'user_id' })
   user?: UserEntity;
+
+  @OneToMany(() => ViewEntity, (entity) => entity.advertisement)
+  views?: ViewEntity[];
+
+  @OneToMany(() => ViewEntity, (entity) => entity.advertisement)
+  photo?: ViewEntity[];
 }

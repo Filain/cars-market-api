@@ -59,13 +59,15 @@ export class AdvertisementController {
   ): Promise<AdvertisementListResponseDto> {
     return await this.advertisementService.findMyAdvertisement(query, userData);
   }
-  @SkipAuth()
+  // @SkipAuth()
   @ApiOperation({ summary: 'Get one advertisement by id' })
   @Get(':advertisementId')
+  @ApiBearerAuth()
   public async findOne(
     @Param('advertisementId') advertisementId: string,
+    @CurrentUser() userData: IUserData,
   ): Promise<AdvertisementResponceDto> {
-    return await this.advertisementService.findOne(advertisementId);
+    return await this.advertisementService.findOne(advertisementId, userData);
   }
   @Roles(Role.Admin, Role.Manager, Role.Seller)
   @ApiOperation({ summary: 'Change advertisement' })

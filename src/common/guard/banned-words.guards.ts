@@ -63,7 +63,6 @@ export class BannedWordsGuards implements CanActivate {
         'The description or title contains invalid words',
       );
     }
-
     return true;
   }
 
