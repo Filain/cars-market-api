@@ -7,6 +7,7 @@ import { RolesGuard } from '../common/guard/roles.guard';
 import configuration from '../configs/configs';
 import { AdvertisementModule } from './advertisement/advertisement.module';
 import { AuthModule } from './auth/auth.module';
+import { AwsModule } from './aws/aws.module';
 import { BrandModule } from './brand/brand.module';
 import { HealthModule } from './health/health.module';
 import { ModelModule } from './model/model.module';
@@ -40,6 +41,7 @@ import { UserModule } from './user/user.module';
     ModelModule,
     HealthModule,
     RepositoryModule,
+    AwsModule,
   ],
 })
 export class AppModule {}

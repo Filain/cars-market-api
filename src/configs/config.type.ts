@@ -4,6 +4,7 @@ export type Config = {
   redis: RedisConfig;
   jwt: JWTConfig;
   bank: BankConfig;
+  aws: AWSConfig;
 };
 
 export type AppConfig = {
@@ -34,4 +35,14 @@ export type JWTConfig = {
 
 export type BankConfig = {
   bankURL: string;
+};
+
+export type AWSConfig = {
+  awsAccessKeyId: string;
+  awsSecretAccessKey: string;
+  awsS3ObjectAcl: string;
+  awsS3BucketPath: string;
+  awsS3BucketName: string;
+  awsS3Endpoint: string;
+  awsS3Region: string;
 };

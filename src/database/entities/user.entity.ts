@@ -29,6 +29,9 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'boolean', default: false })
   blocked: boolean;
 
+  @Column({ type: 'text', nullable: true })
+  image?: string;
+
   @OneToMany(() => RefreshTokenEntity, (entity) => entity.user)
   refreshTokens?: RefreshTokenEntity[];
 

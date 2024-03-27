@@ -31,4 +31,13 @@ export default (): Config => ({
   bank: {
     bankURL: process.env.BANK_URL,
   },
+  aws: {
+    awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    awsS3ObjectAcl: process.env.AWS_S3_OBJECT_ACL,
+    awsS3BucketPath: process.env.AWS_S3_BUCKET_PATH,
+    awsS3BucketName: process.env.AWS_S3_BUCKET_NAME,
+    awsS3Endpoint: process.env.AWS_S3_ENDPOINT,
+    awsS3Region: process.env.AWS_S3_REGION,
+  },
 });

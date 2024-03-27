@@ -10,4 +10,8 @@ export class UserResponseDto {
   accountType?: EAccountTypes;
 
   roles: string;
+
+  blocked?: boolean;
+
+  image?: string;
 }

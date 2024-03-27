@@ -28,7 +28,6 @@ export class AdvertisementService {
   constructor(
     private readonly advertisementRepository: AdvertisementRepository,
     private readonly currencyRepository: CurrencyRepository,
-    private authCacheService: AuthCacheService,
     private userRepository: UserRepository,
     private viewRepository: ViewRepository,
   ) {}
@@ -72,6 +71,7 @@ export class AdvertisementService {
       where: { id: advertisementId },
       relations: { user: true },
     });
+
     await this.viewRepository.save({
       advertisement_id: advertisementId,
     });

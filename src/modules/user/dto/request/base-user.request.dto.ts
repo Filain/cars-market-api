@@ -42,4 +42,9 @@ export class BaseUserRequestDto {
 
   @IsBoolean()
   account?: boolean;
+
+  @IsOptional()
+  @IsString()
+  @Length(0, 3000)
+  image?: string;
 }

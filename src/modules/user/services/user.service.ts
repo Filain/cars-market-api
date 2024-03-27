@@ -7,6 +7,8 @@ import {
 import { CacheCustom } from 'src/common/decorators/cache-method.decorator';
 
 import { IUserData } from '../../auth/interfaces/user-data.interface';
+import { AwsService } from '../../aws/aws.service';
+import { EFileType } from '../../aws/models/enums/file-type.enum';
 import { UserRepository } from '../../repository/services/user.repository';
 import { BaseUserRequestDto } from '../dto/request/base-user.request.dto';
 import { UpdateUserRequestDto } from '../dto/request/update-user.request.dto';
@@ -15,7 +17,10 @@ import { UserMapper } from './user.mapper';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly awsService: AwsService,
+  ) {}
 
   public async create(createUserDto: BaseUserRequestDto): Promise<any> {
     Logger.log(createUserDto);
@@ -53,5 +58,22 @@ export class UserService {
     if (user) {
       throw new ConflictException();
     }
+  }
+  public async uploadAvatar(
+    file: Express.Multer.File,
+    userData: IUserData,
+  ): Promise<UserResponseDto> {
+    const userEntity = await this.userRepository.findOneBy({
+      id: userData.userId,
+    });
+    const pathFile = await this.awsService.uploadFile(
+      file,
+      userData.userId,
+      EFileType.USER,
+    );
+
+    await this.userRepository.save({ ...userEntity, image: pathFile });
+
+    return UserMapper.toResponseDto(userEntity);
   }
 }
