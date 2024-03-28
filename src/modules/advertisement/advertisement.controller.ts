@@ -7,9 +7,18 @@ import {
   Post,
   Put,
   Query,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { Roles } from '../../common/decorators/roles.decorator';
 import { BannedWordsGuards } from '../../common/guard/banned-words.guards';
@@ -19,6 +28,9 @@ import { SellingLimits } from '../../common/guard/selling-limits';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
 import { IUserData } from '../auth/interfaces/user-data.interface';
+import { FileUploadDto } from '../aws/dto/file-upload.dto';
+import { FilesUploadDto } from '../aws/dto/files-upload.dto';
+import { FileAmountValidationPipe } from '../aws/validator/fileAmountValidationPipe';
 import { AdvertisementListRequestDto } from './dto/requses/advertisement-list.request.dto';
 import { CreateAdvertisementRequestDto } from './dto/requses/create-advertisement.request.dto';
 import { UpdateAdvertisementRequestDto } from './dto/requses/update-advertisement.request.dto';
@@ -93,5 +105,27 @@ export class AdvertisementController {
     @CurrentUser() userData: IUserData,
   ): Promise<void> {
     await this.advertisementService.remove(advertisementId, userData);
+  }
+  // @Roles(Role.Admin, Role.Manager, Role.Seller)
+  @Post(':advertisementId/photos')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Upload Advertisement photo' })
+  @UseInterceptors(FilesInterceptor('files'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'advertisement photo',
+    type: FilesUploadDto,
+  })
+  public async uploadPhotos(
+    @UploadedFiles(new FileAmountValidationPipe())
+    files: Array<Express.Multer.File>,
+    @Param('advertisementId') advertisementId: string,
+    @CurrentUser() userData: IUserData,
+  ): Promise<any> {
+    return await this.advertisementService.uploadPhotos(
+      files,
+      advertisementId,
+      userData,
+    );
   }
 }

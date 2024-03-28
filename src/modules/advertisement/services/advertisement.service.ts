@@ -3,14 +3,16 @@ import {
   Injectable,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { Express } from 'express';
 
 import { Role } from '../../../common/guard/enums/role.enum';
 import { AdvertisementEntity } from '../../../database/entities/advertisement.entity';
-import { TokenType } from '../../auth/enums/token-type.enum';
 import { IUserData } from '../../auth/interfaces/user-data.interface';
-import { AuthCacheService } from '../../auth/services/auth-cache.service';
+import { AwsService } from '../../aws/aws.service';
+import { EFileType } from '../../aws/models/enums/file-type.enum';
 import { AdvertisementRepository } from '../../repository/services/advirtisement.repository';
 import { CurrencyRepository } from '../../repository/services/currency.repository';
+import { PhotoRepository } from '../../repository/services/photo.repository';
 import { UserRepository } from '../../repository/services/user.repository';
 import { ViewRepository } from '../../repository/services/view.repository';
 import { EAccountTypes } from '../../user/enums/account-types.enum';
@@ -30,6 +32,8 @@ export class AdvertisementService {
     private readonly currencyRepository: CurrencyRepository,
     private userRepository: UserRepository,
     private viewRepository: ViewRepository,
+    private photoRepository: PhotoRepository,
+    private awsService: AwsService,
   ) {}
   public async create(dto: CreateAdvertisementRequestDto, userData: IUserData) {
     const EUR = await this.currencyRepository.findOneBy({ ccy: 'EUR' });
@@ -53,6 +57,7 @@ export class AdvertisementService {
         priceFunc: PriceUSD,
       }),
     );
+    // викликати аплоад
     return AdvertisementMapper.toResponseCreateDto(advertisementEntity);
   }
 
@@ -116,6 +121,14 @@ export class AdvertisementService {
       advertisementId,
       userData,
     );
+
+    const photoEn = await this.photoRepository.findBy({
+      advertisement_id: advertisementId,
+    });
+    for (const photo of photoEn) {
+      await this.awsService.deleteFile(photo.photo);
+      await this.photoRepository.remove(photo);
+    }
     await this.advertisementRepository.remove(advertisement);
   }
 
@@ -176,5 +189,28 @@ export class AdvertisementService {
       usd = +entity.price;
     }
     return { ...entity, uah, eur, usd };
+  }
+
+  public async uploadPhotos(
+    files: Array<Express.Multer.File>,
+    advertisementId: string,
+    userData: IUserData,
+  ) {
+    const advertisement = await this.findMyOneByIdOrThrow(
+      advertisementId,
+      userData,
+    );
+    const pathFile = await this.awsService.uploadFiles(
+      files,
+      advertisementId,
+      EFileType.ADVERTISEMENT,
+    );
+    for (const path of pathFile) {
+      await this.photoRepository.save({
+        photo: path,
+        advertisement_id: advertisementId,
+      });
+    }
+    return 'Photo upload';
   }
 }

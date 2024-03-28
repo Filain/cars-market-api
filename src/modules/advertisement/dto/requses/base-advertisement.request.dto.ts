@@ -6,6 +6,9 @@ import { ERegion } from '../../enums/region.enum';
 
 export class BaseAdvertisementRequestDto {
   @IsString()
+  id: string;
+
+  @IsString()
   title: string;
 
   @IsString()
@@ -34,18 +37,6 @@ export class BaseAdvertisementRequestDto {
 
   @IsEnum(EStatus)
   isValidate: EStatus;
-
-  @IsInt()
-  totalViews?: number;
-
-  @IsInt()
-  viewsToday?: number;
-
-  @IsInt()
-  viewsThisWeek?: number;
-
-  @IsInt()
-  viewsThisMonth?: number;
 
   @IsString()
   created: string;

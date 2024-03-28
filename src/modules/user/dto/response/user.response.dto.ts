@@ -14,4 +14,5 @@ export class UserResponseDto {
   blocked?: boolean;
 
   image?: string;
+  // avatar: user?.avatar ? `${configs.AWS_S3_URL}${user?.avatar}` : null,
 }

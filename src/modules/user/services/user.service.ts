@@ -66,6 +66,11 @@ export class UserService {
     const userEntity = await this.userRepository.findOneBy({
       id: userData.userId,
     });
+
+    if (userEntity.image) {
+      await this.awsService.deleteFile(userEntity.image);
+    }
+
     const pathFile = await this.awsService.uploadFile(
       file,
       userData.userId,
@@ -73,7 +78,6 @@ export class UserService {
     );
 
     await this.userRepository.save({ ...userEntity, image: pathFile });
-
     return UserMapper.toResponseDto(userEntity);
   }
 }

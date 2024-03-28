@@ -10,6 +10,7 @@ export class AdvertisementMapper {
     advertisementWithPrices: AdvertisementWithPrices,
   ): AdvertisementResponceDto {
     return {
+      id: advertisementWithPrices.id,
       brand: advertisementWithPrices.brand,
       model: advertisementWithPrices.model,
       price: advertisementWithPrices.price,
@@ -32,6 +33,7 @@ export class AdvertisementMapper {
     advertisementEntity: AdvertisementEntity,
   ): AdvertisementResponceDto {
     return {
+      id: advertisementEntity.id,
       brand: advertisementEntity.brand,
       model: advertisementEntity.model,
       price: advertisementEntity.price,

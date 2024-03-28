@@ -1,6 +1,7 @@
 import * as path from 'node:path';
 
 import {
+  DeleteObjectCommand,
   ObjectCannedACL,
   PutObjectCommand,
   S3Client,
@@ -37,7 +38,7 @@ export class AwsService {
     this.client = new S3Client(configuration);
   }
 
-  async uploadFile(
+  public async uploadFile(
     file: Express.Multer.File,
     itemId: string,
     itemType: EFileType,
@@ -54,6 +55,44 @@ export class AwsService {
       }),
     );
     return pathFile;
+  }
+  public async uploadFiles(
+    files: Express.Multer.File[],
+    itemId: string,
+    itemType: EFileType,
+  ): Promise<string[]> {
+    const uploadedFilePaths: string[] = [];
+
+    // Проходимося по кожному файлу у масиві
+    for (const file of files) {
+      const pathFile = this.buildPath(file.originalname, itemId, itemType);
+
+      // Відправляємо файл на сервер AWS S3
+      await this.client.send(
+        new PutObjectCommand({
+          Key: pathFile,
+          Bucket: this.AWSConfig.awsS3BucketName,
+          Body: file.buffer,
+          ContentType: file.mimetype,
+          ACL: this.AWSConfig.awsS3ObjectAcl as ObjectCannedACL,
+        }),
+      );
+
+      // Додаємо шлях завантаженого файлу до масиву
+      uploadedFilePaths.push(pathFile);
+    }
+
+    // Повертаємо масив шляхів завантажених файлів
+    return uploadedFilePaths;
+  }
+
+  public async deleteFile(pathFile: string): Promise<void> {
+    await this.client.send(
+      new DeleteObjectCommand({
+        Bucket: this.AWSConfig.awsS3BucketName,
+        Key: pathFile,
+      }),
+    );
   }
 
   private buildPath(

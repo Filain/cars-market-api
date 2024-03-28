@@ -8,11 +8,6 @@ export class PhotoEntity extends BaseEntity {
   @Column({ type: 'text' })
   photo: string;
 
-  // @Column()
-  // user_id: string;
-  // @ManyToOne(() => UserEntity, (entity) => entity.cars)
-  // @JoinColumn({ name: 'user_id' })
-  // user?: UserEntity;
   @Column()
   advertisement_id: string;
   @ManyToOne(() => AdvertisementEntity, (entity) => entity.photo)
