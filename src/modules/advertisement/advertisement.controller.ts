@@ -28,7 +28,6 @@ import { SellingLimits } from '../../common/guard/selling-limits';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
 import { IUserData } from '../auth/interfaces/user-data.interface';
-import { FileUploadDto } from '../aws/dto/file-upload.dto';
 import { FilesUploadDto } from '../aws/dto/files-upload.dto';
 import { FileAmountValidationPipe } from '../aws/validator/fileAmountValidationPipe';
 import { AdvertisementListRequestDto } from './dto/requses/advertisement-list.request.dto';

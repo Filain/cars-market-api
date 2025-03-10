@@ -21,7 +21,6 @@ export class BankRequestService {
       this.bankConfig.bankURL,
     );
     const currencies = CurrencyMapper.toResponseDto(axiosResponse);
-
     // Перебір отриманих від API валют
     for (const currency of currencies) {
       // Знаходимо валюту в базі даних за її кодом (ccy)

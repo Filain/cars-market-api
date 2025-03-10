@@ -4,6 +4,7 @@ import {
   Logger,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { query } from 'express';
 import { CacheCustom } from 'src/common/decorators/cache-method.decorator';
 
 import { IUserData } from '../../auth/interfaces/user-data.interface';
@@ -12,7 +13,9 @@ import { EFileType } from '../../aws/models/enums/file-type.enum';
 import { UserRepository } from '../../repository/services/user.repository';
 import { BaseUserRequestDto } from '../dto/request/base-user.request.dto';
 import { UpdateUserRequestDto } from '../dto/request/update-user.request.dto';
+import { UserListRequestDto } from '../dto/request/user-list.request.dto';
 import { UserResponseDto } from '../dto/response/user.response.dto';
+import { UserListResponseDto } from '../dto/response/user-list.response.dto';
 import { UserMapper } from './user.mapper';
 
 @Injectable()
@@ -22,19 +25,22 @@ export class UserService {
     private readonly awsService: AwsService,
   ) {}
 
+  public async findAll(
+    query: UserListRequestDto,
+  ): Promise<UserListResponseDto> {
+    const [users, total] = await this.userRepository.findAll(query);
+    return UserMapper.toListResponseDto(users, total, query);
+  }
+
   public async create(createUserDto: BaseUserRequestDto): Promise<any> {
     Logger.log(createUserDto);
     return 'This action adds a new user';
   }
 
-  public async findAll(): Promise<string> {
-    return `This action returns all user`;
-  }
-
-  @CacheCustom(5000)
-  public async findOne(id: number): Promise<string> {
-    throw new UnprocessableEntityException('User not found');
-    return `This action returns a #${id} user`;
+  // @CacheCustom(5000)
+  public async findOne(id: string): Promise<UserResponseDto> {
+    const entity = await this.userRepository.findOneBy({ id });
+    return UserMapper.toResponseDto(entity);
   }
 
   public async updateMe(
@@ -53,6 +59,7 @@ export class UserService {
     const entity = await this.userRepository.findOneBy({ id: userData.userId });
     return UserMapper.toResponseDto(entity);
   }
+
   public async isEmailUniqueOrThrow(email: string): Promise<void> {
     const user = await this.userRepository.findOneBy({ email });
     if (user) {

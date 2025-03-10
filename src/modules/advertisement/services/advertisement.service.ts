@@ -57,7 +57,6 @@ export class AdvertisementService {
         priceFunc: PriceUSD,
       }),
     );
-    // викликати аплоад
     return AdvertisementMapper.toResponseCreateDto(advertisementEntity);
   }
 

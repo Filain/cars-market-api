@@ -5,6 +5,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -23,7 +24,9 @@ import { IUserData } from '../auth/interfaces/user-data.interface';
 import { FileUploadDto } from '../aws/dto/file-upload.dto';
 import { FileSizeValidationPipe } from '../aws/validator/fileSizeValidationPipe';
 import { UpdateUserRequestDto } from './dto/request/update-user.request.dto';
+import { UserListRequestDto } from './dto/request/user-list.request.dto';
 import { UserResponseDto } from './dto/response/user.response.dto';
+import { UserListResponseDto } from './dto/response/user-list.response.dto';
 import { UserService } from './services/user.service';
 
 @ApiTags('User')
@@ -34,9 +37,12 @@ export class UserController {
   @SkipAuth()
   @ApiOperation({ summary: 'Get all users' })
   @Get()
-  public async findAll(): Promise<string> {
-    return await this.userService.findAll();
+  public async findAll(
+    @Query() query: UserListRequestDto,
+  ): Promise<UserListResponseDto> {
+    return await this.userService.findAll(query);
   }
+
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get information about me' })
   @Get('me')
@@ -58,10 +64,13 @@ export class UserController {
 
   @SkipAuth()
   @ApiOperation({ summary: 'Get user about me' })
-  @Get(':id')
-  public async findOne(@Param('id') id: string): Promise<string> {
-    return await this.userService.findOne(+id);
+  @Get(':userId')
+  public async findOne(
+    @Param('userId') userId: string,
+  ): Promise<UserResponseDto> {
+    return await this.userService.findOne(userId);
   }
+
   // @SkipAuth()
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Upload photo' })
